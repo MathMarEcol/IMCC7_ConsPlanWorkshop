@@ -1,0 +1,53 @@
+---
+title: "Conservation Planning for the marine environment: An introduction to tools and techniques"
+author: "Sandra Neubert, Jason D. Everett, Anthony J. Richardson, Jennifer McGowan"
+date: today
+output: 
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float:
+      collapsed: true
+    code_folding: "hide"
+---
+
+## Outline for today:
+
+| Topic                                              | Time        | Instructor    |
+|----------------------------------------------------|-------------|---------------|
+| Topic 1                                            | 09:00-      |                |
+| Topic 2                                            | -           |               |
+| Topic 3                                            | -           |              |
+| Break                                              | -           |                |
+| Topic 4                                            | -            |               |
+| Topic 5                                           | -             |                 |
+| Wrap up; Q&A                                       | - |               |
+
+: {.striped .hover}
+
+
+## Who we are
+
+### Professor Anthony Richardson
+
+[Professor Anthony J. Richardson](https://researchers.uq.edu.au/researcher/1567){target="_blank"} uses mathematical, statistical, computational and spatial planning tools to investigate human impacts on our oceans - and to find solutions. Particular foci include: Marine spatial planning (Where best to locate marine protected areas), Developing models of marine ecosystems (How lower trophic levels (plankton) regulate fisheries productivity and carbon sequestration) and, Long-term change in lower trophic levels (plankton) in the ocean
+
+Anthony holds a joint position between the School of the Environment at UQ and CSIRO Environment, Australia's national science provider. Anthony runs a dynamic lab at the nexus between marine ecology, conservation science and mathematics. His focus is on using mathematical tools to better conserve biodiversity, predict impacts of climate change, and understand the functioning of marine ecosystems.
+
+### Sandra Neubert
+
+### Dr Jason Everett
+
+[Dr Jason Everett](https://jaseeverett.github.io){target="_blank"} is a biological oceanographer and data scientist. He works on understanding how oceanographic processes structure global pelagic food webs, designing climate-smart marine protected areas and investigating the impact of climate-change on marine ecosystem function. He enjoys working with model output, including oceanographic, climate and size-spectra, and collating large observational datasets to analyse.
+
+Recently Jason has been building R-packages and R-shiny visualisation tools and applying novel spatial planning methods to inform marine spatial management. He is currently working on tools for on-the-ground deployment in the Weddell Sea (Antarctica) and various island nations of the Pacific, Indian and Atlantic Oceans.
+
+The latest tools released are the [Biological Ocean Observer](https://shiny.csiro.au/BioOceanObserver/){target="_blank"}, in conjunction with the r-package [planktonr](https://planktonteam.github.io/planktonr/){target="_blank"}.
+
+
+### Dr Jennifer McGowan
+
+
+
+
+
