@@ -5,7 +5,7 @@
 # Sandra Neubert (s.neubert@uq.edu.au)
 
 # Load packages
-pacman::p_load(tidyverse, sf, terra, stars, rnaturalearth, mregions, tmap, prioritizr, purrr)
+pacman::p_load(tidyverse, sf, rnaturalearth, patchwork, prioritizr)
 
 # Define CRS##also give ESRI example
 cCRS <- "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs"
@@ -45,6 +45,11 @@ features <- readRDS(file.path(inputDat, "Features", "fans.rds")) %>%
   left_join(readRDS(file.path(inputDat, "Features", "silky_shark.rds")) %>% st_drop_geometry(), by = "cellID") %>%
   left_join(readRDS(file.path(inputDat, "Features", "tiger_shark.rds")) %>% st_drop_geometry(), by = "cellID")
 
+# quick look at data
+ggplot() + geom_sf(data = features, aes(fill = tiger_shark))
+
+ggplot() + geom_sf(data = features, aes(fill = seamount))
+
 # Load Cost  ---------------------------------------------------------------
 cost <- st_read(file.path(inputDat, "Cost", "cost_surface.shp")) %>%
   st_transform(cCRS) %>%
@@ -56,4 +61,16 @@ ggplot() +
 # Create combined sf object  ---------------------------------------------------------------
 out_sf <- features %>%
   left_join(cost %>% sf::st_drop_geometry(), by = "cellID")
+
+# Get landmass  ---------------------------------------------------------------
+landmass <- rnaturalearth::ne_countries(
+  scale = "medium",
+  returnclass = "sf"
+) %>%
+  sf::st_transform(cCRS)
+landmass <- rnaturalearth::ne_countries(
+  scale = "medium",
+  returnclass = "sf"
+) %>%
+  sf::st_transform(cCRS)
 

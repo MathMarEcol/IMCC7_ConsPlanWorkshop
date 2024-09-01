@@ -4,7 +4,7 @@ install.packages("pacman")
 library(pacman)
 
 pacman::p_load(tidyverse, sf, terra, rnaturalearth,
-               rnaturalearthdata, mregions, prioritizr)
+               rnaturalearthdata, mregions, patchwork, prioritizr)
 
 # Installing the solvers
 # If you are a Windows user, lpsympony might work better
