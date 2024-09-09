@@ -81,7 +81,11 @@ INSERT PARAGRAPH SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFO
 
 # Introduction to spatial planning with *prioritizr*
 
-In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format so first we deomstrate how to create some _"fake"_ data to ensure you can work with your own data when you get home.
+In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some _"fake"_ data to ensure you can work with your own data when you get home see @sec-appendix1.
+
+## Study Site - The Galapagos
+
+Today you are a conservation officer helping plan the Galapagos Marine Reserve. The Galapagos Islands and surrounding waters are recognized globally for their unique species and biodiversity, such as the endemic giant tortoises, Galapagos penguins and marine iguanas. In 1998, the Ecuadorian Government created a marine reserve, covering 138,000 km^2^ around the islands, which at the time, made it the second largest marine reserve in the world. However, many of the species inhabiting Galapagos, such as the blue footed booby (*Sula nebouxii*) and silky shark (*Carcharhinus falciformis*), utilise the open ocean, and range outside the borders of the reserve. Thanks to tracking studies carried out over the quarter century since the creation of the reserve, we know much more about the movements of many of the species in and around the reserve, and can begin to address the question of whether the current reserve design provides adequate protection for them. We also know much more about the distribution of key ocean habitats in our region. Given that industrial and semi-industrial fishing pressure in Ecuador’s waters outside the reserve increased dramatically at the turn of the century, and that in recent years, large distant water fishing fleets have been reported in the high seas surrounding Ecuador’s Exclusive Economic Zone, the residents of Galapagos are concerned that the existing reserve may not provide sufficient protection to the ocean and wildlife that their livelihoods depend on. They are campaigning for an expansion of the reserve, and have asked us to identify key areas that should be included in their proposed new design. However, the fleets operating around the reserve are concerned that increasing the size of the reserve may affect their livelihoods. In addition to information on key habitats and species movements, we have obtained spatially explicit catch data from the two main fleets - the industrial tuna purse seine fleet and the national longline fleet for large pelagic species
 
 ## Loading preliminaries
 
@@ -125,7 +129,7 @@ cCRS <- "ESRI:54009"
 
 Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared. 
 
-We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km2 area. We are defining our projection as the Mollweide Equal-Area projection.
+We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km^2^ area. We are defining our projection as the Mollweide Equal-Area projection.
 The `PUs` object contains planning units represented as spatial polygons (i.e., a `sf::st_sf()` object). This object has two columns that denote the ID (`cellID`) and the outline of each planning unit (`geometry`).
 
 
@@ -619,7 +623,7 @@ Seminoff, J.A., Zárate, P., Coyne, M., Foley, D.G., Parker, D., Lyon, B.N., Dut
 Shillinger, G.L., Swithenbank, A.M., Bailey, H., Bograd, S.J., Castelton, M.R., Wallace, B.P., Spotila, J.R., Paladino, F.V., Piedra, R., Block, B.A., 2011. Vertical and horizontal habitat preferences of post-nesting leatherback turtles in the South Pacific Ocean. Marine Ecology Progress Series 422, 275-289.
 
 
-# Appendix 1: Creating your own spatial data
+# Appendix 1: Creating your own spatial data {#sec-appendix1}
 
 ## Create a dataset boundary
 
