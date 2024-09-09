@@ -31,13 +31,15 @@ Welcome to the **Conservation Planning for the Marine Environment Workshop** at 
 
 | Topic        | Time   | Instructor |
 |--------------|--------|------------|
-| Topic 1      | 09:00- |            |
-| Topic 2      | \-     |            |
-| Topic 3      | \-     |            |
-| Break        | \-     |            |
-| Topic 4      | \-     |            |
-| Topic 5      | \-     |            |
-| Wrap up; Q&A | \-     |            |
+| Introduction    | 08:00-08:05 | Ant and Sandra |
+| Theory of Spatial Planning    | 08:05-08:20 | Jen |
+| Common Spatial Prioritisation tools      |  08:20-08:30 | Ant |
+| Spatial Planning with *prioritizr*      | 08:30 - 10:00   | Sandra |
+| Break        | 10:00-10:20     |   |
+| Applications of Marine Spatial Planning | 10:20-10:30 | Ant |
+| Advanced Spatial Prioritisation      | 10:30-11:40     | Sandra |
+| Going beyond Code      | 11:40-11:50 | Jase |
+| Wrap up; Q&A | 11:50-12:00   | Ant and Sandra|
 
 : {.striped .hover}
 
@@ -87,7 +89,7 @@ It is best practice to load and define all "preliminaries" at the start of your 
 
 First, we load the necessary R packages. A really good R package to install the versions of the R packages that are in CRAN is **`pacman`**. We are going to install and load packages throughout the course of this workshop, but a common best practice is to install and load all necessary packages to run each script at the top of the R script.
 
-```{r}
+```{r, eval=FALSE}
 install.packages("pacman")
 ```
 
@@ -101,140 +103,31 @@ source("utils-functions.R")
 Another best practice is to define the input paths as a variable to enhance the reproducibility of your R script. A good R package that breaches the difference in setting file paths in different Operating Systems (OS; e.g., Windows syntax vs Mac), among other cool things, is the **`here`** R package. If you want to read more about the functionality of the package's functions, take a look at [their website](https://here.r-lib.org/).
 
 ```{r filepath1}
-# Define file paths
-inputDat <- file.path("Input")
+inputDat <- file.path("Input") # Define file paths
 ``` 
 
-Next, we define the Coordinated Reference System (CRS) that will be used throughout this R script. There are different ways to do this, but the two most common ones is using the *EPSG code* and the *PROJ4 strings*. Here's a [pdf](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf) that was prepared by M. Frazier and is freely available online that talks about the CRS syntax really well. It is recommended to use the EPSG code, but we find that using the PROJ4 string version of the CRS is useful for plotting maps that are not necessarily centered in the Meridian.
+Next, we define the Coordinated Reference System (CRS) that will be used throughout this R script. There are different ways to do this, but the two most common ones is using the *EPSG code* and the *PROJ4 strings*. Here's a [pdf](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf) that was prepared by M. Frazier and is freely available online that talks about the CRS syntax really well. It is recommended to use the EPSG code or WKT (Well Known Text), but we find that using the PROJ4 string version of the CRS is useful for plotting maps that are not necessarily centered in the Meridian. But note PROJ4 is technically deprecated now so use with care.
 
 Define CRS as the [Mollweide Projection](https://desktop.arcgis.com/en/arcmap/latest/map/projections/mollweide.htm)
 ```{r}
 cCRS <- "ESRI:54009" 
 ```
 
-
-## Create some datasets
-
-Create a dataset boundary
-
-```{r}
-dat_bndry <- tibble(x = 100, y = seq(-50, 0, by = 1)) %>%
-  bind_rows(tibble(x = seq(100, 160, by = 1), y = 0)) %>%
-  bind_rows(tibble(x = 160, y = seq(0, -50, by = -1))) %>%
-  bind_rows(tibble(x = seq(160, 100, by = -1), y = -50)) %>%
-  as.matrix() %>%
-  list() %>%
-  st_polygon() %>%
-  st_sfc(crs = "EPSG:4326") %>%
-  st_sf() %>%
-  st_make_valid()
-```
-
-Use boundary to create grid
-
-```{r}
-dat_PUs <- st_make_grid(dat_bndry, cellsize = 2) %>%
-  st_sf() %>%
-  mutate(cellID = row_number()) # Add a cell ID reference
-```
-
-```{r}
-ggplot() +
-  geom_sf(data = dat_PUs)
-```
-
-Create some random species data
-
-```{r}
-dat_species_prob <- dat_PUs %>%
-  st_sf() %>%
-  mutate(
-    Spp1 = runif(n = dim(.)[[1]]),
-    Spp2 = runif(n = dim(.)[[1]]),
-    Spp3 = runif(n = dim(.)[[1]]),
-    Spp4 = runif(n = dim(.)[[1]]),
-    Spp5 = runif(n = dim(.)[[1]])
-  )
-print(dat_species_prob)
-```
-
-Convert to binary data
-
-```{r}
-dat_species_bin <- dat_species_prob %>%
-  as_tibble() %>%
-  mutate(across(
-     # Apply to all columns except geometry and cellID
-    -any_of(c("cellID", "geometry")),
-    ~ case_when(
-      . >= 0.5 ~ 1,
-      . < 0.5 ~ 0,
-      is.na(.data) ~ 0
-    )
-  )) %>%
-  st_as_sf()
-```
-
-## Setup prioritisation
-
-Extract feature names for use in prioritisation
-
-```{r}
-col_name <- dat_species_bin %>%
-  select(-"cellID") %>%
-  st_drop_geometry() %>%
-  colnames()
-```
-
-Add a cost layer
-
-```{r}
-out_sf <- dat_species_bin %>%
-  mutate(CostArea = rep(1, 780))
-```
-
-Create targets object
-
-```{r}
-targets <- rep(0.3, length(col_name))
-```
-
-Create a conservation problem
-
-```{r}
-dat_problem <- problem(out_sf,
-                       features = col_name,
-                       cost_column = "CostArea"
-) %>%
-  add_min_set_objective() %>%
-  add_relative_targets(targets) %>%
-  add_binary_decisions() %>%
-  add_default_solver(verbose = FALSE)
-```
-
-## Run prioritisation
-
-Solve and plot conservation problem
-
-```{r}
-dat_soln <- dat_problem %>%
-  solve.ConservationProblem()
-
-(gg_sol <- splnr_plot_Solution(dat_soln))
-```
-
-# Spatial Prioritisation using real datasets
-
-> To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms— vector and raster.    
-> Vector data is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.     
-> Raster data is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).    
+> <h2>Types of Spatial Data </h2>
+> To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms — vector or raster.    
+> **Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.     
+> **Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).    
 > A really useful R package for wrangling raster files (and also vectors!) is the **`terra` R package**. **`stars`** is also a good R package and is particularly strong and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online but you shouldn't use this anymore because it's deprecated and (if you haven't already) start transitioning to `terra`!    
 > Spatial data can also be stored as simple data frames, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object. Below, we used tracking data of green turtles collected in Costa Rica from Jaime Restrepo.
 
 
-## Preliminaries
+## Loading the data
 
-Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared in the previous portion of the workshop. Recall, that we are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km2 area. We are defining our projection as the Mollweide Equal-Area projection.
+Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared. 
+
+We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km2 area. We are defining our projection as the Mollweide Equal-Area projection.
+The `PUs` object contains planning units represented as spatial polygons (i.e., a `sf::st_sf()` object). This object has two columns that denote the ID (`cellID`) and the outline of each planning unit (`geometry`).
+
 
 ```{r}
 PUs <- st_read(file.path(inputDat, "PUs", "Galapagos_Planning_Units.shp")) %>%
@@ -246,15 +139,14 @@ ggplot() +
   geom_sf(data = PUs)
 ```
 
-We also expand this by adding more *features* (i.e., the things we care about that would have corresponding *targets*) to conserve and defining a *cost* (i.e., in this prioritization example, this is what we want to minimize) layer.
+The `features` object describes the spatial distribution of the *features* (i.e., the things we care about that would have corresponding *targets*). The feature data are also saved as an `sf::st_sf()` object. In addition to the `cellID` and `geometry` columns, each column corresponds to a feature we are interested in protecting. Values of the features denote the presence (using value of 1) or absence (using value of 0) across the study area.
+
 
 ```{r}
-# Load Features
 features <- readRDS(file.path(inputDat, "Features", "Features_Combined.rds"))
-
 ```
 
-Quick look at features
+Lets have a look at some of the features using `ggplot()`.
 
 ```{r}
 ggplot() +
@@ -299,7 +191,6 @@ landmass <- rnaturalearth::ne_countries(
 
 ## Setup prioritisation
 
-
 Now, we do the actual spatial prioritization. We are going to use the **R package `prioritizr`** to run the prioritizations. Apart from loading the spatial data, we need to prepare a couple of things for `prioritizr`. We first need to know the "names" (or their identifiers in the dataset) of the *features.*
 
 ```{r}
@@ -332,7 +223,6 @@ If you are a Windows user, lpsympony might work better. Check their website for 
 ```{r eval=FALSE}
 if (!require(remotes)) install.packages("remotes")
 remotes::install_bioc("lpsymphony")
-library(lpsymphony)
 ```
 
 If you are a Mac/Linux, rcbc might work better. Check their README for more details https://github.com/dirkschumacher/rcbc
@@ -340,7 +230,6 @@ If you are a Mac/Linux, rcbc might work better. Check their README for more deta
 ```{r eval=FALSE}
 if (!require(remotes)) install.packages("remotes")
 remotes::install_github("dirkschumacher/rcbc")
-# library(rcbc)
 ```
 
 ## Run prioritsation
@@ -376,7 +265,7 @@ Lets plot the solution and see what it looks like.
 (gg_sol <- splnr_plot_Solution(dat_soln))
 ```
 
-> ## Applications of marine conservation planning
+> <h2> Applications of marine conservation planning </h2>
 > Here we present a box on using prioritizr and Marxan in the literature and in practice
 
 
@@ -700,8 +589,8 @@ targetsMet_zones <- datEx_soln_zones %>%
   prioritizr::eval_feature_representation_summary(datEx_problem_zones, .)
 ```
 
-> ## Beyond code - Apps and communication
-Opening up conservation planning to a wider audience: communicating results effectively and transparently to stakeholders and managers using R Shiny Apps and MaPP
+> <h2> Beyond code - Apps and communication </h2>
+> Opening up conservation planning to a wider audience: communicating results effectively and transparently to stakeholders and managers using R Shiny Apps and MaPP
 
 
 # Concluding Remarks
@@ -728,3 +617,115 @@ Parra, D.M., Andrés, M., Jiménez, J., Banks, S., Muñoz, J.P., 2013. Evaluaci�
 Seminoff, J.A., Zárate, P., Coyne, M., Foley, D.G., Parker, D., Lyon, B.N., Dutton, P.H., 2008. Post-nesting migrations of Galápagos green turtles Chelonia mydas in relation to oceanographic conditions: integrating satellite telemetry with remotely sensed ocean data. Endangered Species Research 4, 57-72
 
 Shillinger, G.L., Swithenbank, A.M., Bailey, H., Bograd, S.J., Castelton, M.R., Wallace, B.P., Spotila, J.R., Paladino, F.V., Piedra, R., Block, B.A., 2011. Vertical and horizontal habitat preferences of post-nesting leatherback turtles in the South Pacific Ocean. Marine Ecology Progress Series 422, 275-289.
+
+
+# Appendix 1: Creating your own spatial data
+
+## Create a dataset boundary
+
+```{r}
+dat_bndry <- tibble(x = 100, y = seq(-50, 0, by = 1)) %>%
+  bind_rows(tibble(x = seq(100, 160, by = 1), y = 0)) %>%
+  bind_rows(tibble(x = 160, y = seq(0, -50, by = -1))) %>%
+  bind_rows(tibble(x = seq(160, 100, by = -1), y = -50)) %>%
+  as.matrix() %>%
+  list() %>%
+  st_polygon() %>%
+  st_sfc(crs = "EPSG:4326") %>%
+  st_sf() %>%
+  st_make_valid()
+```
+
+## Create planning units
+
+```{r}
+dat_PUs <- st_make_grid(dat_bndry, cellsize = 2) %>%
+  st_sf() %>%
+  mutate(cellID = row_number()) # Add a cell ID reference
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = dat_PUs)
+```
+
+## Create species data
+
+```{r}
+dat_species_prob <- dat_PUs %>%
+  st_sf() %>%
+  mutate(
+    Spp1 = runif(n = dim(.)[[1]]),
+    Spp2 = runif(n = dim(.)[[1]]),
+    Spp3 = runif(n = dim(.)[[1]]),
+    Spp4 = runif(n = dim(.)[[1]]),
+    Spp5 = runif(n = dim(.)[[1]])
+  )
+print(dat_species_prob)
+```
+
+## Convert to binary data
+
+```{r}
+dat_species_bin <- dat_species_prob %>%
+  as_tibble() %>%
+  mutate(across(
+     # Apply to all columns except geometry and cellID
+    -any_of(c("cellID", "geometry")),
+    ~ case_when(
+      . >= 0.5 ~ 1,
+      . < 0.5 ~ 0,
+      is.na(.data) ~ 0
+    )
+  )) %>%
+  st_as_sf()
+```
+
+## Setup prioritisation
+
+Extract feature names for use in prioritisation
+
+```{r}
+col_name <- dat_species_bin %>%
+  select(-"cellID") %>%
+  st_drop_geometry() %>%
+  colnames()
+```
+
+Add a cost layer
+
+```{r}
+out_sf <- dat_species_bin %>%
+  mutate(CostArea = rep(1, 780))
+```
+
+Create targets object
+
+```{r}
+targets <- rep(0.3, length(col_name))
+```
+
+Create a conservation problem
+
+```{r}
+dat_problem <- problem(out_sf,
+                       features = col_name,
+                       cost_column = "CostArea"
+) %>%
+  add_min_set_objective() %>%
+  add_relative_targets(targets) %>%
+  add_binary_decisions() %>%
+  add_default_solver(verbose = FALSE)
+```
+
+## Run prioritisation
+
+Solve and plot conservation problem
+
+```{r}
+dat_soln <- dat_problem %>%
+  solve.ConservationProblem()
+
+(gg_sol <- splnr_plot_Solution(dat_soln))
+```
+
