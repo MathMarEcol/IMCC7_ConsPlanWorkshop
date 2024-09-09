@@ -87,6 +87,10 @@ It is best practice to load and define all "preliminaries" at the start of your 
 
 First, we load the necessary R packages. A really good R package to install the versions of the R packages that are in CRAN is **`pacman`**. We are going to install and load packages throughout the course of this workshop, but a common best practice is to install and load all necessary packages to run each script at the top of the R script.
 
+```{r}
+install.packages("pacman")
+```
+
 Load the required packages and code
 
 ```{r}
@@ -103,10 +107,9 @@ inputDat <- file.path("Input")
 
 Next, we define the Coordinated Reference System (CRS) that will be used throughout this R script. There are different ways to do this, but the two most common ones is using the *EPSG code* and the *PROJ4 strings*. Here's a [pdf](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf) that was prepared by M. Frazier and is freely available online that talks about the CRS syntax really well. It is recommended to use the EPSG code, but we find that using the PROJ4 string version of the CRS is useful for plotting maps that are not necessarily centered in the Meridian.
 
-
-Define CRS
+Define CRS as the [Mollweide Projection](https://desktop.arcgis.com/en/arcmap/latest/map/projections/mollweide.htm)
 ```{r}
-cCRS <- "ESRI:54009" # Mollweide projection
+cCRS <- "ESRI:54009" 
 ```
 
 
@@ -136,10 +139,8 @@ dat_PUs <- st_make_grid(dat_bndry, cellsize = 2) %>%
 ```
 
 ```{r}
-
 ggplot() +
   geom_sf(data = dat_PUs)
-
 ```
 
 Create some random species data
@@ -163,7 +164,8 @@ Convert to binary data
 dat_species_bin <- dat_species_prob %>%
   as_tibble() %>%
   mutate(across(
-    -any_of(c("cellID", "geometry")), # Apply to all columns except geometry and cellID
+     # Apply to all columns except geometry and cellID
+    -any_of(c("cellID", "geometry")),
     ~ case_when(
       . >= 0.5 ~ 1,
       . < 0.5 ~ 0,
@@ -182,13 +184,11 @@ col_name <- dat_species_bin %>%
   select(-"cellID") %>%
   st_drop_geometry() %>%
   colnames()
-
 ```
 
 Add a cost layer
 
 ```{r}
-
 out_sf <- dat_species_bin %>%
   mutate(CostArea = rep(1, 780))
 ```
@@ -204,12 +204,12 @@ Create a conservation problem
 ```{r}
 dat_problem <- problem(out_sf,
                        features = col_name,
-                       cost_column = "CostArea") %>%
+                       cost_column = "CostArea"
+) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets) %>%
   add_binary_decisions() %>%
   add_default_solver(verbose = FALSE)
-
 ```
 
 ## Run prioritisation
@@ -221,7 +221,6 @@ dat_soln <- dat_problem %>%
   solve.ConservationProblem()
 
 (gg_sol <- splnr_plot_Solution(dat_soln))
-
 ```
 
 # Spatial Prioritisation using real datasets
@@ -238,46 +237,31 @@ dat_soln <- dat_problem %>%
 Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared in the previous portion of the workshop. Recall, that we are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km2 area. We are defining our projection as the Mollweide Equal-Area projection.
 
 ```{r}
-PUs <- st_read(file.path(inputDat,  "PUs","Galapagos_Planning_Units.shp")) %>%
+PUs <- st_read(file.path(inputDat, "PUs", "Galapagos_Planning_Units.shp")) %>%
   st_transform(cCRS) %>%
   select(-"cost") %>%
   rename(cellID = puid)
 
 ggplot() +
   geom_sf(data = PUs)
-
 ```
 
 We also expand this by adding more *features* (i.e., the things we care about that would have corresponding *targets*) to conserve and defining a *cost* (i.e., in this prioritization example, this is what we want to minimize) layer.
 
 ```{r}
 # Load Features
+features <- readRDS(file.path(inputDat, "Features", "Features_Combined.rds"))
 
-features <- readRDS(file.path(inputDat, "Features", "fans.rds")) %>%
-  left_join(readRDS(file.path(inputDat, "Features", "plateau.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "ridge.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "seamount.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "abyssal_hills.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "abyssal_plains.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "abyssal_mountains.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "basin.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "escarpments.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "rift_valleys.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "shelf_class_high.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "spreading_ridges.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "blue_footed_booby.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "great_frigatebird.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "green_turtle.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "silky_shark.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "tiger_shark.rds")) %>% st_drop_geometry(), by = "cellID")
 ```
 
 Quick look at features
 
 ```{r}
-ggplot() + geom_sf(data = features, aes(fill = tiger_shark))
+ggplot() +
+  geom_sf(data = features, aes(fill = tiger_shark))
 
-ggplot() + geom_sf(data = features, aes(fill = seamount))
+ggplot() +
+  geom_sf(data = features, aes(fill = seamount))
 ```
 
 Load Cost
@@ -289,7 +273,6 @@ cost <- st_read(file.path(inputDat, "Cost", "cost_surface.shp")) %>%
 
 ggplot() +
   geom_sf(data = cost, aes(fill = .data$cost))
-
 ```
 
 Add cost to combined sf object
@@ -330,7 +313,6 @@ col_name <- features %>%
 We then need the *targets* that we're assigning for each feature. Here, we show how we can assign equal targets for all features and how we can also assign different targets for different features. In a practical conservation planning setting, you'd afford higher targets to features that are more important.
 
 ```{r}
-
 # Same target for all
 targets <- rep(0.3, length(col_name))
 
@@ -339,7 +321,6 @@ targets <- rep(0.3, length(col_name))
 targets <- data.frame(feature = col_name) %>%
   mutate(Category = c(rep("Geomorphic", 12), rep("Tracking Data", 5))) %>%
   mutate(target = if_else(Category == "Tracking Data", 50 / 100, 5 / 100))
-
 ```
 
 ## Setup solver
@@ -369,12 +350,12 @@ We now have all the necessary information needed to run the prioritization. Next
 ```{r}
 dat_problem <- problem(out_sf,
                        features = col_name,
-                       cost_column = "cost") %>%
+                       cost_column = "cost"
+) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets$target) %>%
   add_binary_decisions() %>%
   add_default_solver(verbose = FALSE)
-
 ```
 
 Then, we solve the prioritization using `solve.ConservationProblem()`.
@@ -396,7 +377,7 @@ Lets plot the solution and see what it looks like.
 ```
 
 > ## Applications of marine conservation planning
-Here we present a box on using prioritizr and Marxan in the literature and in practice
+> Here we present a box on using prioritizr and Marxan in the literature and in practice
 
 
 # Advanced Spatial prioritisation
@@ -426,16 +407,16 @@ Set up conservation problem
 ```{r}
 datEx_problem <- problem(out_sf,
                          features = col_name,
-                         cost_column = "cost") %>%
-  add_min_set_objective() %>%
-  add_relative_targets(targets$target) %>% # we have a data frame now, so need to specify the column with targets
-  add_binary_decisions() %>%
-  add_default_solver(verbose = FALSE)
+                         cost_column = "cost"
+) %>%
+  add_min_set_objective() %>% # Add objective function
+  add_relative_targets(targets$target) %>% # specify the column with targets
+  add_binary_decisions() %>% # Binary answer (Yes/No)
+  add_default_solver(verbose = FALSE) # Add solver
 
 # Solve conservation problem
 datEx_soln <- datEx_problem %>%
-  solve.ConservationProblem()
-
+  solve.ConservationProblem() # Solve the problem
 ```
 
 Plotting the solution
@@ -448,7 +429,9 @@ Plotting the solution
 
 ```{r}
 # how were the targets met?
-targetsMet <- eval_feature_representation_summary(datEx_problem, datEx_soln[, "solution_1"])
+targetsMet <- eval_feature_representation_summary(
+  datEx_problem, 
+  datEx_soln[, "solution_1"])
 ```
 
 There were a lot of individual PUs selected in the solution. This can be problematic to include in an actual protected area
@@ -466,11 +449,12 @@ Set up conservation problem
 ```{r}
 datEx_problem_P <- problem(out_sf,
                            features = col_name,
-                           cost_column = "cost") %>%
+                           cost_column = "cost"
+) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets$target) %>%
   add_binary_decisions() %>%
-  add_default_solver(gap = 0.2, verbose = FALSE) # we're adjusting the optimality gap here to speed up the process
+  add_default_solver(gap = 0.2, verbose = FALSE) # Larger optimality gap to speed up code
 ```
 
 Solve conservation problem
@@ -482,7 +466,8 @@ datEx_soln_P <- datEx_problem_P %>%
 
 ```{r}
 (gg_solnP <- splnr_plot_Solution(datEx_soln_P) +
-   geom_sf(data = landmass, colour = "black", fill = "black", show.legend = FALSE) +
+   geom_sf(data = landmass, 
+           colour = "black", fill = "black", show.legend = FALSE) +
    coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 ```
 
@@ -501,7 +486,8 @@ mpas <- readRDS(file.path(inputDat, "MPAs", "mpas.rds"))
 
 # First look at the data
 (gg_mpas <- ggplot() +
-    geom_sf(data = mpas, aes(fill = .data$mpas), colour = NA, size = 0.001, show.legend = FALSE))
+    geom_sf(data = mpas, aes(fill = .data$mpas), 
+            colour = NA, size = 0.001, show.legend = FALSE))
 ```
 
 Conservation problem
@@ -509,7 +495,8 @@ Conservation problem
 ```{r}
 datEx_problem_LIC <- problem(out_sf,
                              features = col_name,
-                             cost_column = "cost") %>%
+                             cost_column = "cost"
+) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets$target) %>%
   add_locked_in_constraints(as.logical(mpas$mpas)) %>%
@@ -521,7 +508,8 @@ datEx_soln_LIC <- datEx_problem_LIC %>%
   solve.ConservationProblem()
 
 (gg_solnLIC <- splnr_plot_Solution(datEx_soln_LIC) +
-    geom_sf(data = landmass, colour = "black", fill = "black", show.legend = FALSE) +
+    geom_sf(data = landmass, 
+            colour = "black", fill = "black", show.legend = FALSE) +
     coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 ```
 
@@ -535,10 +523,12 @@ out_sf <- out_sf %>%
 # Set up conservation problem
 datEx_problem_LC <- problem(out_sf,
                             features = col_name,
-                            cost_column = "cost") %>%
+                            cost_column = "cost"
+) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets$target) %>%
-  add_linear_constraints(sum(out_sf$cost_area) * 0.4, sense = "<=", out_sf$cost_area) %>% # set an area-based budget
+  add_linear_constraints(sum(out_sf$cost_area) * 0.4, 
+                         sense = "<=", out_sf$cost_area) %>% # set area-based budget
   add_binary_decisions() %>%
   add_default_solver(verbose = FALSE)
 
@@ -547,9 +537,9 @@ datEx_soln_LC <- datEx_problem_LC %>%
   solve.ConservationProblem()
 
 (gg_solnLC <- splnr_plot_Solution(datEx_soln_LC) +
-    geom_sf(data = landmass, colour = "black", fill = "black", show.legend = FALSE) +
+    geom_sf(data = landmass, 
+            colour = "black", fill = "black", show.legend = FALSE) +
     coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
-
 ```
 
 ## Changing Objective Functions
@@ -559,14 +549,14 @@ datEx_soln_LC <- datEx_problem_LC %>%
 ```{r}
 # Targets
 dfTarget <- splnr_get_featureRep(datEx_soln, datEx_problem,
-                                 solnCol = "solution_1") %>%
+                                 solnCol = "solution_1"
+) %>%
   mutate(category = targets$Category)
 
 (ggTarget <- splnr_plot_featureRep(
   df = dfTarget,
   nr = 1, showTarget = TRUE
 ))
-
 ```
 
 ### Objective 2: Minimum shortfall
@@ -575,9 +565,10 @@ dfTarget <- splnr_get_featureRep(datEx_soln, datEx_problem,
 # Set up conservation problem
 datEx_problem_minS <- problem(out_sf,
                               features = col_name,
-                              cost_column = "cost_area") %>%
+                              cost_column = "cost_area"
+) %>%
   add_min_shortfall_objective(sum(out_sf$cost_area) * 0.05) %>%
-  add_relative_targets(targets$target) %>% # we have a data frame now, so need to specify the column with targets
+  add_relative_targets(targets$target) %>% # specify column with targets
   add_binary_decisions() %>%
   add_default_solver(verbose = FALSE)
 
@@ -586,26 +577,27 @@ datEx_soln_minS <- datEx_problem_minS %>%
   solve.ConservationProblem()
 
 (gg_solnminS <- splnr_plot_Solution(datEx_soln_minS) +
-    geom_sf(data = landmass, colour = "black", fill = "black", show.legend = FALSE) +
+    geom_sf(data = landmass, 
+            colour = "black", fill = "black", show.legend = FALSE) +
     coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 
 # Feature representation
 dfTarget_minS <- splnr_get_featureRep(datEx_soln_minS, datEx_problem_minS,
-                                      solnCol = "solution_1") %>%
+                                      solnCol = "solution_1"
+) %>%
   mutate(category = targets$Category)
 
 (ggTargetminS <- splnr_plot_featureRep(
   df = dfTarget_minS,
   nr = 1, showTarget = TRUE
 ))
-
 ```
 
 Compare objective functions
 
 ```{r}
 (ggTarget_comparison <- ggTarget + ggTargetminS +
-   plot_layout(guides = 'collect', axes = "collect"))
+   plot_layout(guides = "collect", axes = "collect"))
 ```
 
 ### Objective 3: Maximum utility
@@ -613,7 +605,8 @@ Compare objective functions
 ```{r}
 datEx_problem_maxU <- problem(out_sf,
                               features = col_name,
-                              cost_column = "cost_area") %>%
+                              cost_column = "cost_area"
+) %>%
   add_max_utility_objective(sum(out_sf$cost_area) * 0.05) %>%
   add_binary_decisions() %>%
   add_default_solver(verbose = FALSE)
@@ -623,12 +616,14 @@ datEx_soln_maxU <- datEx_problem_maxU %>%
   solve.ConservationProblem()
 
 (gg_solnmaxU <- splnr_plot_Solution(datEx_soln_maxU) +
-    geom_sf(data = landmass, colour = "black", fill = "black", show.legend = FALSE) +
+    geom_sf(data = landmass, 
+            colour = "black", fill = "black", show.legend = FALSE) +
     coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 
 dfTarget_maxU <- splnr_get_featureRep(datEx_soln_maxU, datEx_problem_maxU,
                                       solnCol = "solution_1",
-                                      maxUtility = TRUE) %>%
+                                      maxUtility = TRUE
+) %>%
   mutate(category = targets$Category)
 
 (ggTargetmaxU <- splnr_plot_featureRep(
@@ -636,14 +631,13 @@ dfTarget_maxU <- splnr_get_featureRep(datEx_soln_maxU, datEx_problem_maxU,
   nr = 1, showTarget = FALSE,
   maxUtility = TRUE
 ))
-
 ```
 
 Compare maximum utility objective function with minimum set and minimum shortfall
 
 ```{r}
 (ggTarget_comparison2 <- ggTarget + ggTargetminS + ggTargetmaxU +
-   plot_layout(guides = 'collect', axes = "collect"))
+   plot_layout(guides = "collect", axes = "collect"))
 ```
 
 ## Adding Zones
@@ -654,8 +648,10 @@ We will now look how this spatial plan needs to be extended to include multiple 
 # Create Targets
 targetsZones <- data.frame(feature = col_name) %>%
   mutate(Category = c(rep("Geomorphic", 12), rep("Tracking Data", 5))) %>%
-  mutate(targetZ1 = dplyr::if_else(Category == "Tracking Data", 30 / 100, 0),
-         targetZ2 = dplyr::if_else(Category != "Tracking Data", 10 / 100, 0)) %>%
+  mutate(
+    targetZ1 = dplyr::if_else(Category == "Tracking Data", 30 / 100, 0),
+    targetZ2 = dplyr::if_else(Category != "Tracking Data", 10 / 100, 0)
+  ) %>%
   dplyr::select("targetZ1", "targetZ2") %>%
   as.matrix()
 
@@ -668,7 +664,8 @@ datEx_problem_zones <- prioritizr::problem(
   out_sf %>%
     mutate(
       Cost1 = rep(1, nrow(.)),
-      Cost2 = rep(1, nrow(.))),
+      Cost2 = rep(1, nrow(.))
+    ),
   z1,
   cost_column = c("Cost1", "Cost2")
 ) %>%
@@ -680,7 +677,6 @@ datEx_problem_zones <- prioritizr::problem(
 # Solve conservation problem
 datEx_soln_zones <- datEx_problem_zones %>%
   prioritizr::solve.ConservationProblem()
-
 ```
 
 Examine the solution
@@ -692,7 +688,8 @@ Examine the solution
   colorVals = c("#c6dbef", "#3182bd", "#003366"),
   legendLabels = c("Not selected", "Zone 1", "Zone 2")
 ) +
-  geom_sf(data = landmass, colour = "black", fill = "lightgrey", show.legend = FALSE) +
+  geom_sf(data = landmass, 
+          colour = "black", fill = "lightgrey", show.legend = FALSE) +
   coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 
 # Feature representation
@@ -701,7 +698,6 @@ targetsMet_zones <- datEx_soln_zones %>%
   sf::st_drop_geometry() %>%
   tibble::as_tibble() %>%
   prioritizr::eval_feature_representation_summary(datEx_problem_zones, .)
-
 ```
 
 > ## Beyond code - Apps and communication
@@ -715,7 +711,9 @@ Opening up conservation planning to a wider audience: communicating results effe
 
 Acuña-Marrero, D., Smith, A.N.H., Hammerschlag, N., Hearn, A., Anderson, M.J., Calich, H., Pawley, M.D.M., Fischer, C., Salinas-de-León, P., 2017. Residency and movement patterns of an apex predatory shark (Galeocerdo cuvier) at the Galápagos Marine Reserve. PLoS One 12, e0183669.
 
-Galapagos Movement Consortium, Movebank Data Repository <https://www.movebank.org/cms/movebank-main> Harris, P.T., Macmillan-Lawler, M., Rupp, J. and Baker, E.K., 2014. Geomorphology of the oceans. Marine Geology, 352, pp.4-24.
+Galapagos Movement Consortium, Movebank Data Repository <https://www.movebank.org/cms/movebank-main> 
+
+Harris, P.T., Macmillan-Lawler, M., Rupp, J. and Baker, E.K., 2014. Geomorphology of the oceans. Marine Geology, 352, pp.4-24.
 
 Hearn, A.R., Acuña, D., Ketchum, J.T., Peñaherrera, C., Green, J., Marshall, A., Guerrero, M., Shillinger, G., 2014. Elasmobranchs of the Galápagos Marine Reserve, In (J. Denkinger, L. Vinueza, eds.) Galápagos Marine Reserve: a dynamic socio-ecological system., pp. 23-59. Springer.
 
