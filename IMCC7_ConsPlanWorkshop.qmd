@@ -10,7 +10,7 @@ format:
     toc-location: right
     toc-depth: 2
     toc-title: "Conservation Planning"
-    toc-expand: true
+    toc-expand: 1
     number-sections: true
     number-depth: 2
     code_folding: "hide"
@@ -37,9 +37,9 @@ Welcome to the **Conservation Planning for the Marine Environment Workshop** at 
 | Spatial Planning with *prioritizr*      | 08:30 - 10:00   | Sandra |
 | Break        | 10:00-10:20     |   |
 | Applications of Marine Spatial Planning | 10:20-10:30 | Ant |
-| Advanced Spatial Prioritisation      | 10:30-11:40     | Sandra |
-| Going beyond Code      | 11:40-11:50 | Jase |
-| Wrap up; Q&A | 11:50-12:00   | Ant and Sandra|
+| Advanced Spatial Prioritisation      | 10:30-12:00     | Sandra |
+| Going beyond Code      | 12:00-12:15 | Jase |
+| Wrap up; Q&A | 12:15-12:30   | Ant and Sandra |
 
 : {.striped .hover}
 
@@ -66,7 +66,7 @@ The latest tools released are the [Biological Ocean Observer](https://shiny.csir
 
 # Theory of conservation planning and spatial prioritisation
 
-INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
+> INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 
 Growing demands for food, energy, and infrastructure put marine ecosystems and their services at risk. To protect marine biodiversity against threats from the expanding use of the marine environment, international targets aim to expand the global protected area network to 30% of the oceans by 2030. In addition, United Nations member states recently adopted a treaty for the conservation and sustainable use of biodiversity in the High Seas, an ambitious goal considering <1% of the High Seas is currently highly protected. Meeting these international targets requires tools and methods facilitating informed decision-making to balance biodiversity conservation with demands of industries using the environment.
 
@@ -76,7 +76,7 @@ Conservation planning allows to prioritize areas important for biodiversity cons
 
 # Common spatial prioritisation tools
 
-INSERT PARAGRAPH SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
+> INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 
 
 # Introduction to spatial planning with *prioritizr*
@@ -160,7 +160,11 @@ ggplot() +
   geom_sf(data = features, aes(fill = seamount))
 ```
 
-Load Cost
+## Load Cost
+
+Often conservation and management actions are restricted by costs, therefore we seek to meet targets, while minimising costs and other impacts of industries, communities or other stakeholders. For this scenario, we will use a cost to the fishing industry. This is a layer which reflects the economic value derived within a given cell for the two primary fishing fleets operating in the Galapagos: the artisanal long-line pelagic fleet, and the industrial tuna purse seine fleet. 
+  
+Because there is no fishing allowed in the marine reserve, the cost is negligible and so prioritizr will preference meeting targets in these low-cost areas. 
 
 ```{r}
 cost <- st_read(file.path(inputDat, "Cost", "cost_surface.shp")) %>%
@@ -333,9 +337,11 @@ There were a lot of individual PUs selected in the solution. This can be problem
 
 Penalties can be added to the conservation problem as a way to penalize specific conditions or metrics in the planning units. Penalizing certain criteria (e.g. certain environmental conditions, activities etc.) leads to a trade-off with the objective function which aims to minimise the cost. Increasing the "cost" of a planning units through a penalty causes planning units that are not penalized over to be selected over those that are.
 
-### Boundary penalty
+### Penalty 1: Boundary penalty
 
-Penalizes the number of boundaries in spatial plan
+The **boundary penalty** helps the user decide how “clumped” the network should be. Often, it is not feasible to enforce a network of fragmented planning units (as often happens when we optimize with no design constraints). For this reason, we need to adjust the **boundary penalty** to ensure we can minimize fragmentation and aggregate solutions into patches via “clumping.” There is no perfect value for the **boundary penalty** so we encourage users to explore different levels with calibration. 
+
+> SANDRA THERE IS NO PENALTY IN THE EXAMPLE BELOW!
 
 Set up conservation problem
 
@@ -366,13 +372,17 @@ datEx_soln_P <- datEx_problem_P %>%
 
 The selected PUs are more aggregated BUT, in an example with varying cost this might also lead to a more expensive solution
 
+### Penalty 2: Species penalty
+
+> SHOULD WE ADD AT LEAST ONE OTHER PENALTY EXAMPLE?
+
 ## Adding Constraints
 
 The conservation problems so far were very simplistic. In reality, it is often required to add more complexity.This can be done with constraints.
 
 ### Constraint 1: Locked-in areas
 
-One example for constraints is locking in specific areas, for example already existing MPAs
+One example for constraints is locking in specific areas, for example already existing MPAs. These MPA will have to be part of the final solution - after all, they are **locked-in**.
 
 ```{r}
 mpas <- readRDS(file.path(inputDat, "MPAs", "mpas.rds"))
