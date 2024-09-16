@@ -6,7 +6,7 @@
 
 # Preliminaries ------------------------------------------------------
 
-source("02_SpatPrior_PrepData.R")
+source("IMCC_1_PrepData.R")
 source("utils-functions.R")
 
 # Extract feature names
@@ -64,3 +64,56 @@ saveRDS(dat_soln, file.path("Output", "Solution1.rds"))
 (gg_sol <- splnr_plot_Solution(dat_soln))
 
 ggsave(file.path("Figures", "gg_sol.png"),  width = 6, height = 8, dpi = 200)
+
+# How well were targets met?
+
+targ_coverage <- eval_target_coverage_summary(dat_problem, dat_soln[, "solution_1"])
+
+# Irreplaceability -------------------------------------------------------
+
+soln <- dat_soln %>%
+  tibble::as_tibble()
+
+ferrier <- prioritizr::eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
+  dplyr::select("total") %>%
+  dplyr::mutate(geometry = dat_soln$geometry) %>%
+  dplyr::rename(score = "total") %>%
+  sf::st_as_sf()
+
+rwr <- prioritizr::eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+  dplyr::mutate(geometry = soln$geometry) %>%
+  dplyr::rename(score = "rwr") %>%
+  sf::st_as_sf()
+
+# replacement <- prioritizr::eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+#   dplyr::mutate(geometry = soln$geometry) %>%
+#   dplyr::rename(score = "rc") %>%
+#   sf::st_as_sf()
+
+quant99fs <- round(stats::quantile(ferrier$score, 0.99), 4)
+ferrier$score[ferrier$score >= quant99fs] <- quant99fs
+
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = ferrier, ggplot2::aes(fill = .data$score), colour = NA)
+
+quant99fs <- round(stats::quantile(rwr$score, 0.99), 4)
+rwr$score[rwr$score >= quant99fs] <- quant99fs
+
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = rwr, ggplot2::aes(fill = .data$score), colour = NA)
+
+# Portfolios (or no-regret areas) -------------------------------------------------------
+dat_soln_portfolio <- dat_problem %>%
+  prioritizr::add_cuts_portfolio(5) %>% # create a portfolio of solutions
+  prioritizr::solve.ConservationProblem()
+
+selFreq <- dat_soln_portfolio %>% # calculate selection frequency
+  sf::st_drop_geometry() %>%
+  dplyr::mutate(selFreq = as.factor(rowSums(
+    dplyr::select(., dplyr::starts_with("solution_"))
+  ))) %>%
+  sf::st_as_sf(geometry = dat_soln_portfolio$geometry) %>%
+  dplyr::select(selFreq)
+
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = selFreq, ggplot2::aes(fill = .data$selFreq), colour = NA)

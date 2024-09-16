@@ -27,23 +27,7 @@ ggplot() +
 # Load Features ---------------------------------------------------------------
 # Create an sf object for all features
 
-features <- readRDS(file.path(inputDat, "Features", "fans.rds")) %>%
-  left_join(readRDS(file.path(inputDat, "Features", "plateau.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "ridge.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "seamount.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "abyssal_hills.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "abyssal_plains.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "abyssal_mountains.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "basin.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "escarpments.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "rift_valleys.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "shelf_class_high.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "spreading_ridges.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "blue_footed_booby.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "great_frigatebird.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "green_turtle.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "silky_shark.rds")) %>% st_drop_geometry(), by = "cellID") %>%
-  left_join(readRDS(file.path(inputDat, "Features", "tiger_shark.rds")) %>% st_drop_geometry(), by = "cellID")
+features <- readRDS(file.path(inputDat, "Features", "Features_Combined.rds"))
 
 # quick look at data
 ggplot() + geom_sf(data = features, aes(fill = tiger_shark))

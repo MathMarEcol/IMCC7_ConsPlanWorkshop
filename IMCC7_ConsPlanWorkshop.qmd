@@ -23,23 +23,23 @@ execute:
 
 # Overview
 
-Welcome to the **Conservation Planning for the Marine Environment Workshop** at IMCC7. This document will run through all the material (and more!) that we will cover in the workshop. The workshop will teach participants the core principles of systematic conservation planning (SCP)  and provide them with basic hands-on skills for various widely used decision-support tools to start applying conservation planning to their own work.
+Welcome to the **Conservation Planning for the Marine Environment Workshop** at IMCC7. This document will run through all the material (and more!) that we will cover in the workshop. The workshop will teach participants the core principles of systematic conservation planning (SCP) and provide them with basic hands-on skills for various widely used decision-support tools to start applying conservation planning to their own work.
 
 *Notes: You can "show"/"hide" all code by clicking on the drop down box on the top right corner of the page. We have also added the option to copy the code in each code chunk.*
 
 ## Outline for today:
 
-| Topic        | Time   | Instructor |
-|--------------|--------|------------|
-| Introduction    | 08:00-08:05 | Ant and Sandra |
-| Theory of Spatial Planning    | 08:05-08:20 | Jen |
-| Common Spatial Prioritisation tools      |  08:20-08:30 | Ant |
-| Spatial Planning with *prioritizr*      | 08:30 - 10:00   | Sandra |
-| Break        | 10:00-10:20     |   |
-| Applications of Marine Spatial Planning | 10:20-10:30 | Ant |
-| Advanced Spatial Prioritisation      | 10:30-12:00     | Sandra |
-| Going beyond Code      | 12:00-12:15 | Jase |
-| Wrap up; Q&A | 12:15-12:30   | Ant and Sandra |
+| Topic                                   | Time          | Instructor     |
+|-----------------------------------------|---------------|----------------|
+| Introduction                            | 08:00-08:05   | Ant and Sandra |
+| Theory of Spatial Planning              | 08:05-08:20   | Jen            |
+| Common Spatial Prioritisation tools     | 08:20-08:30   | Ant            |
+| Spatial Planning with *prioritizr*      | 08:30 - 10:00 | Sandra         |
+| Break                                   | 10:00-10:20   |                |
+| Applications of Marine Spatial Planning | 10:20-10:30   | Ant            |
+| Advanced Spatial Prioritisation         | 10:30-12:00   | Sandra         |
+| Going beyond Code                       | 12:00-12:15   | Jase           |
+| Wrap up; Q&A                            | 12:15-12:30   | Ant and Sandra |
 
 : {.striped .hover}
 
@@ -63,12 +63,11 @@ The latest tools released are the [Biological Ocean Observer](https://shiny.csir
 
 ### Dr Jennifer McGowan
 
-
 # Theory of conservation planning and spatial prioritisation
 
 > INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 
-Growing demands for food, energy, and infrastructure put marine ecosystems and their services at risk. To protect marine biodiversity against threats from the expanding use of the marine environment, international targets aim to expand the global protected area network to 30% of the oceans by 2030. In addition, United Nations member states recently adopted a treaty for the conservation and sustainable use of biodiversity in the High Seas, an ambitious goal considering <1% of the High Seas is currently highly protected. Meeting these international targets requires tools and methods facilitating informed decision-making to balance biodiversity conservation with demands of industries using the environment.
+Growing demands for food, energy, and infrastructure put marine ecosystems and their services at risk. To protect marine biodiversity against threats from the expanding use of the marine environment, international targets aim to expand the global protected area network to 30% of the oceans by 2030. In addition, United Nations member states recently adopted a treaty for the conservation and sustainable use of biodiversity in the High Seas, an ambitious goal considering \<1% of the High Seas is currently highly protected. Meeting these international targets requires tools and methods facilitating informed decision-making to balance biodiversity conservation with demands of industries using the environment.
 
 Conservation planning allows to prioritize areas important for biodiversity conservation whilst minimizing economic costs, and to quantify ecological and economic impacts of decisions. Conservation planning tools are applicable to a wide range of conservation problems across marine, freshwater and terrestrial ecosystems, that can vary in spatial scales, number and type of biodiversity features, managed uses, management actions, and budget. This workshop aims to teach participants the core principles of conservation planning and provide them with basic hands-on skills to formulate, solve, and interpret the results of conservation problems to start applying conservation planning to their own work.
 
@@ -78,14 +77,13 @@ Conservation planning allows to prioritize areas important for biodiversity cons
 
 > INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 
-
 # Introduction to spatial planning with *prioritizr*
 
-In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some _"fake"_ data to ensure you can work with your own data when you get home see @sec-appendix1.
+In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home see @sec-appendix1.
 
 ## Study Site - The Galapagos
 
-Today you are a conservation officer helping plan the Galapagos Marine Reserve. The Galapagos Islands and surrounding waters are recognized globally for their unique species and biodiversity, such as the endemic giant tortoises, Galapagos penguins and marine iguanas. In 1998, the Ecuadorian Government created a marine reserve, covering 138,000 km^2^ around the islands, which at the time, made it the second largest marine reserve in the world. However, many of the species inhabiting Galapagos, such as the blue footed booby (*Sula nebouxii*) and silky shark (*Carcharhinus falciformis*), utilise the open ocean, and range outside the borders of the reserve. Thanks to tracking studies carried out over the quarter century since the creation of the reserve, we know much more about the movements of many of the species in and around the reserve, and can begin to address the question of whether the current reserve design provides adequate protection for them. We also know much more about the distribution of key ocean habitats in our region. Given that industrial and semi-industrial fishing pressure in Ecuador’s waters outside the reserve increased dramatically at the turn of the century, and that in recent years, large distant water fishing fleets have been reported in the high seas surrounding Ecuador’s Exclusive Economic Zone, the residents of Galapagos are concerned that the existing reserve may not provide sufficient protection to the ocean and wildlife that their livelihoods depend on. They are campaigning for an expansion of the reserve, and have asked us to identify key areas that should be included in their proposed new design. However, the fleets operating around the reserve are concerned that increasing the size of the reserve may affect their livelihoods. In addition to information on key habitats and species movements, we have obtained spatially explicit catch data from the two main fleets - the industrial tuna purse seine fleet and the national longline fleet for large pelagic species
+Today you are a conservation officer helping plan the Galapagos Marine Reserve. The Galapagos Islands and surrounding waters are recognized globally for their unique species and biodiversity, such as the endemic giant tortoises, Galapagos penguins and marine iguanas. In 1998, the Ecuadorian Government created a marine reserve, covering 138,000 km^2^ around the islands, which at the time, made it the second largest marine reserve in the world. However, many of the species inhabiting Galapagos, such as the blue footed booby (*Sula nebouxii*) and silky shark (*Carcharhinus falciformis*), utilise the open ocean, and range outside the borders of the reserve. Thanks to tracking studies carried out over the quarter century since the creation of the reserve, we know much more about the movements of many of the species in and around the reserve, and can begin to address the question of whether the current reserve design provides adequate protection for them. We also know much more about the distribution of key ocean habitats in our region. Given that industrial and semi-industrial fishing pressure in Ecuador's waters outside the reserve increased dramatically at the turn of the century, and that in recent years, large distant water fishing fleets have been reported in the high seas surrounding Ecuador's Exclusive Economic Zone, the residents of Galapagos are concerned that the existing reserve may not provide sufficient protection to the ocean and wildlife that their livelihoods depend on. They are campaigning for an expansion of the reserve, and have asked us to identify key areas that should be included in their proposed new design. However, the fleets operating around the reserve are concerned that increasing the size of the reserve may affect their livelihoods. In addition to information on key habitats and species movements, we have obtained spatially explicit catch data from the two main fleets - the industrial tuna purse seine fleet and the national longline fleet for large pelagic species
 
 ## Loading preliminaries
 
@@ -108,30 +106,29 @@ Another best practice is to define the input paths as a variable to enhance the 
 
 ```{r filepath1}
 inputDat <- file.path("Input") # Define file paths
-``` 
+```
 
 Next, we define the Coordinated Reference System (CRS) that will be used throughout this R script. There are different ways to do this, but the two most common ones is using the *EPSG code* and the *PROJ4 strings*. Here's a [pdf](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf) that was prepared by M. Frazier and is freely available online that talks about the CRS syntax really well. It is recommended to use the EPSG code or WKT (Well Known Text), but we find that using the PROJ4 string version of the CRS is useful for plotting maps that are not necessarily centered in the Meridian. But note PROJ4 is technically deprecated now so use with care.
 
 Define CRS as the [Mollweide Projection](https://desktop.arcgis.com/en/arcmap/latest/map/projections/mollweide.htm)
+
 ```{r}
 cCRS <- "ESRI:54009" 
 ```
 
-> <h2>Types of Spatial Data </h2>
-> To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms — vector or raster.    
-> **Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.     
-> **Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).    
-> A really useful R package for wrangling raster files (and also vectors!) is the **`terra` R package**. **`stars`** is also a good R package and is particularly strong and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online but you shouldn't use this anymore because it's deprecated and (if you haven't already) start transitioning to `terra`!    
+> <h2>Types of Spatial Data</h2>
+>
+> To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms --- vector or raster.\
+> **Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.\
+> **Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).\
+> A really useful R package for wrangling raster files (and also vectors!) is the **`terra` R package**. **`stars`** is also a good R package and is particularly strong and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online but you shouldn't use this anymore because it's deprecated and (if you haven't already) start transitioning to `terra`!\
 > Spatial data can also be stored as simple data frames, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object. Below, we used tracking data of green turtles collected in Costa Rica from Jaime Restrepo.
-
 
 ## Loading the data
 
-Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared. 
+Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared.
 
-We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km^2^ area. We are defining our projection as the Mollweide Equal-Area projection.
-The `PUs` object contains planning units represented as spatial polygons (i.e., a `sf::st_sf()` object). This object has two columns that denote the ID (`cellID`) and the outline of each planning unit (`geometry`).
-
+We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km^2^ area. We are defining our projection as the Mollweide Equal-Area projection. The `PUs` object contains planning units represented as spatial polygons (i.e., a `sf::st_sf()` object). This object has two columns that denote the ID (`cellID`) and the outline of each planning unit (`geometry`).
 
 ```{r}
 PUs <- st_read(file.path(inputDat, "PUs", "Galapagos_Planning_Units.shp")) %>%
@@ -144,7 +141,6 @@ ggplot() +
 ```
 
 The `features` object describes the spatial distribution of the *features* (i.e., the things we care about that would have corresponding *targets*). The feature data are also saved as an `sf::st_sf()` object. In addition to the `cellID` and `geometry` columns, each column corresponds to a feature we are interested in protecting. Values of the features denote the presence (using value of 1) or absence (using value of 0) across the study area.
-
 
 ```{r}
 features <- readRDS(file.path(inputDat, "Features", "Features_Combined.rds"))
@@ -162,9 +158,9 @@ ggplot() +
 
 ## Load Cost
 
-Often conservation and management actions are restricted by costs, therefore we seek to meet targets, while minimising costs and other impacts of industries, communities or other stakeholders. For this scenario, we will use a cost to the fishing industry. This is a layer which reflects the economic value derived within a given cell for the two primary fishing fleets operating in the Galapagos: the artisanal long-line pelagic fleet, and the industrial tuna purse seine fleet. 
-  
-Because there is no fishing allowed in the marine reserve, the cost is negligible and so prioritizr will preference meeting targets in these low-cost areas. 
+Often conservation and management actions are restricted by costs, therefore we seek to meet targets, while minimising costs and other impacts of industries, communities or other stakeholders. For this scenario, we will use a cost to the fishing industry. This is a layer which reflects the economic value derived within a given cell for the two primary fishing fleets operating in the Galapagos: the artisanal long-line pelagic fleet, and the industrial tuna purse seine fleet.
+
+Because there is no fishing allowed in the marine reserve, the cost is negligible and so prioritizr will preference meeting targets in these low-cost areas.
 
 ```{r}
 cost <- st_read(file.path(inputDat, "Cost", "cost_surface.shp")) %>%
@@ -273,9 +269,9 @@ Lets plot the solution and see what it looks like.
 (gg_sol <- splnr_plot_Solution(dat_soln))
 ```
 
-> <h2> Applications of marine conservation planning </h2>
+> <h2>Applications of marine conservation planning</h2>
+>
 > Here we present a box on using prioritizr and Marxan in the literature and in practice
-
 
 # Advanced Spatial prioritisation
 
@@ -339,7 +335,7 @@ Penalties can be added to the conservation problem as a way to penalize specific
 
 ### Penalty 1: Boundary penalty
 
-The **boundary penalty** helps the user decide how “clumped” the network should be. Often, it is not feasible to enforce a network of fragmented planning units (as often happens when we optimize with no design constraints). For this reason, we need to adjust the **boundary penalty** to ensure we can minimize fragmentation and aggregate solutions into patches via “clumping.” There is no perfect value for the **boundary penalty** so we encourage users to explore different levels with calibration. 
+The **boundary penalty** helps the user decide how "clumped" the network should be. Often, it is not feasible to enforce a network of fragmented planning units (as often happens when we optimize with no design constraints). For this reason, we need to adjust the **boundary penalty** to ensure we can minimize fragmentation and aggregate solutions into patches via "clumping." There is no perfect value for the **boundary penalty** so we encourage users to explore different levels with calibration.
 
 > SANDRA THERE IS NO PENALTY IN THE EXAMPLE BELOW!
 
@@ -603,18 +599,17 @@ targetsMet_zones <- datEx_soln_zones %>%
   prioritizr::eval_feature_representation_summary(datEx_problem_zones, .)
 ```
 
-> <h2> Beyond code - Apps and communication </h2>
+> <h2>Beyond code - Apps and communication</h2>
+>
 > Opening up conservation planning to a wider audience: communicating results effectively and transparently to stakeholders and managers using R Shiny Apps and MaPP
 
-
 # Concluding Remarks
-
 
 # References
 
 Acuña-Marrero, D., Smith, A.N.H., Hammerschlag, N., Hearn, A., Anderson, M.J., Calich, H., Pawley, M.D.M., Fischer, C., Salinas-de-León, P., 2017. Residency and movement patterns of an apex predatory shark (Galeocerdo cuvier) at the Galápagos Marine Reserve. PLoS One 12, e0183669.
 
-Galapagos Movement Consortium, Movebank Data Repository <https://www.movebank.org/cms/movebank-main> 
+Galapagos Movement Consortium, Movebank Data Repository <https://www.movebank.org/cms/movebank-main>
 
 Harris, P.T., Macmillan-Lawler, M., Rupp, J. and Baker, E.K., 2014. Geomorphology of the oceans. Marine Geology, 352, pp.4-24.
 
@@ -624,14 +619,13 @@ Hearn, A.R., Green, J., Román, M.H., Acuña-Marrero, D., Espinoza, E., Klimley,
 
 Hearn, A.R., Espinoza, E., Ketchum, J., Green, J., Peñaherrera, C., Arauz, R., Fischer, C., Steiner, T., Shillinger, G., Henderson, S., Bessudo, S., Soler, G., Klimley, P., 2017. Una década de seguimiento de los movimientos de tiburones resalta la importancia ecológica de las islas del norte: Darwin y Wolf, In (L. Cayot, D. Cruz, eds.) Informe Galápagos 2015-2016. pp. 132-142. DPNG, CGREG, FCD & GC, Puerto Ayora, Galápagos, Ecuador.
 
-Hearn A, Cárdenas S, Allen H, Zurita L, Gabela-Flores MV, Peñaherrera-Palma CR, Castrejón M, Cruz S, Kelley D, Jeglinski J, Bruno J, Jones J, Naveira-Garabato A, Forryan A, Viteri C, Picho J, Donnelly A, Tudhope A, Wilson M & G Reck G (2022). A Blueprint for Marine Spatial Planning of Ecuador’s Exclusive Economic Zone around the Galápagos Marine Reserve. Universidad San Francisco de Quito / PEW Bertarelli Ocean Legacy, Quito, Ecuador, 361 p.
+Hearn A, Cárdenas S, Allen H, Zurita L, Gabela-Flores MV, Peñaherrera-Palma CR, Castrejón M, Cruz S, Kelley D, Jeglinski J, Bruno J, Jones J, Naveira-Garabato A, Forryan A, Viteri C, Picho J, Donnelly A, Tudhope A, Wilson M & G Reck G (2022). A Blueprint for Marine Spatial Planning of Ecuador's Exclusive Economic Zone around the Galápagos Marine Reserve. Universidad San Francisco de Quito / PEW Bertarelli Ocean Legacy, Quito, Ecuador, 361 p.
 
 Parra, D.M., Andrés, M., Jiménez, J., Banks, S., Muñoz, J.P., 2013. Evaluación de la incidencia de impacto de embarcaciones y distribución de la tortuga verde (Chelonia mydas) en Galápagos. Retrieved from Puerto Ayora, Galapagos, Ecuador
 
 Seminoff, J.A., Zárate, P., Coyne, M., Foley, D.G., Parker, D., Lyon, B.N., Dutton, P.H., 2008. Post-nesting migrations of Galápagos green turtles Chelonia mydas in relation to oceanographic conditions: integrating satellite telemetry with remotely sensed ocean data. Endangered Species Research 4, 57-72
 
 Shillinger, G.L., Swithenbank, A.M., Bailey, H., Bograd, S.J., Castelton, M.R., Wallace, B.P., Spotila, J.R., Paladino, F.V., Piedra, R., Block, B.A., 2011. Vertical and horizontal habitat preferences of post-nesting leatherback turtles in the South Pacific Ocean. Marine Ecology Progress Series 422, 275-289.
-
 
 # Appendix 1: Creating your own spatial data {#sec-appendix1}
 
@@ -742,4 +736,3 @@ dat_soln <- dat_problem %>%
 
 (gg_sol <- splnr_plot_Solution(dat_soln))
 ```
-
