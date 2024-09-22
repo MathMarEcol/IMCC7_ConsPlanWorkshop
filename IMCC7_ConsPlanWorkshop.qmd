@@ -78,6 +78,71 @@ Conservation planning allows to prioritize areas important for biodiversity cons
 
 > INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 
+# Installations for hand-on conservation planning.
+
+While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
+
+Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
+
+## Installation
+
+Installing `R` on your machine is straightforward. Follow these steps:
+
+1.  Go to the [CRAN](http://cran.r-project.org) (Comprehensive `R` Archive Network) `R` website. If you type "r" into Google it is the first entry
+2.  Choose to download `R` for Linux, Mac or Windows
+3.  For Windows users, just install "base" and this will link you to the download file
+4.  For Mac users, choose the version relevant to your operating system, noting that if you have a new M1- or M2-powered Mac, you will need to download the Arm version
+5.  If you are a Linux user, you know what to do!
+
+If you already have R installed, please make sure it has been updated recently.
+
+## Installing *RStudio*
+
+We will use *RStudio* in this workshop. *RStudio* is a free front-end to `R` for Windows, Mac or Linux (i.e., `R` is working in the background). It makes working with `R` easier, more productive and more organised, especially for new users. There are other front-ends, but *RStudio* is the most popular. To install:
+
+1.  Go to the [RStudio download website](https://posit.co/download/rstudio-desktop/)
+2.  Choose the *Download* button from the menu at the top, right-hand corner of the page
+3.  Choose the *Download* button beneath *RStudio Desktop*\
+4.  Download the correct version for your operating system
+5.  Install, and you're ready to go!
+
+## Using *RStudio*: A quick guide!
+
+*RStudio* has four main panes each in a quadrant of your screen. You can set what appears in each (through Tools/Options menu in Windows or *RStudio*/Preference on a Mac), but the default has:
+
+-   Console (bottom left)
+-   Source editor (top left)
+-   Environment and History (top right), and
+-   Plots, Files, Packages, Help, Viewer (bottom right).
+
+## Installing a solver
+
+Solving conservation problems with `prioritizr`also requires having a solver installed on your machine. Solvers use specific algorithms that use mathematical optimization to find an optimal solution to a problem. There are many different solvers available that differ in terms of their efficiency and cost. The best solvers are usually very expensive to use, but there are some good free ones available. For some more information on solver comparisons, see [this article](https://prioritizr.net/articles/solver_benchmarks.html) by Jeff Hanson, the developer of `prioritizr`.
+
+For the purpose of this workshop, we recommend using on of the freely available solvers that are supported by `prioritizr` and are easily installed, such as the SYMPHONY solver, which can be easily installed using.
+
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("lpsymphony")
+```
+
+Alternatively, if the installation fails for some reason, on your machine, try one of the following options to install either the HiGHS solver or the CBC solver.
+
+```{r}
+install.packages("highs")
+```
+
+```{r}
+if (!require(remotes)) install.packages("remotes")
+remotes::install_github("dirkschumacher/rcbc")
+```
+
+If you are affiliated with an academic institution, you might have access to a free academic license from Gurobi, one of the state-of-the-art solvers out there. While we will not go through a step-by-step guide on how to install Gurobi here, there are many resources on how to install Gurobi available, for example [this installation guide](https://prioritizr.net/articles/gurobi_installation_guide.html) on the `prioritizr` website. We recommend using this solver if you have access to it and want to use conservation planning for projects after this workshop.
+
+## Installing required R packages
+
 # Introduction to spatial planning with *prioritizr*
 
 In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home see @sec-appendix1.
