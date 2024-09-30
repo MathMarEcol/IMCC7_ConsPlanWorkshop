@@ -22,11 +22,22 @@ execute:
   echo: true
 ---
 
+:::{.callout-important}
+While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
+
+Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
+
+**Please follow the software installation instructions in [Appendix 1](index.html#sec-appendix1) before you attend the workshop.**
+
+:::
+
 # Overview
 
 Welcome to the **Conservation Planning for the Marine Environment Workshop** at IMCC7. This document will run through all the material (and more!) that we will cover in the workshop. The workshop will teach participants the core principles of systematic conservation planning (SCP) and provide them with basic hands-on skills for various widely used decision-support tools to start applying conservation planning to their own work.
 
-*Notes: You can "show"/"hide" all code by clicking on the drop down box on the top right corner of the page. We have also added the option to copy the code in each code chunk.*
+:::{.callout-tip}
+You can copy the code to your clipboard by clicking the symbol in the top right corner of each code chunk.
+:::
 
 ## Outline for today:
 
@@ -39,7 +50,7 @@ Welcome to the **Conservation Planning for the Marine Environment Workshop** at 
 | Break                                   | 10:00-10:20   |                |
 | Applications of Marine Spatial Planning | 10:20-10:30   | Ant            |
 | Advanced Spatial Prioritisation         | 10:30-12:00   | Sandra         |
-| Going beyond Code                       | 12:00-12:15   | Jase           |
+| Going beyond Code                       | 12:00-12:15   | Jase/Alvise    |
 | Wrap up; Q&A                            | 12:15-12:30   | Ant and Sandra |
 
 : {.striped .hover}
@@ -47,6 +58,8 @@ Welcome to the **Conservation Planning for the Marine Environment Workshop** at 
 ## Who we are
 
 ### Sandra Neubert
+
+> INSERT BLURB 
 
 ### Professor Anthony Richardson
 
@@ -64,9 +77,13 @@ The latest tools released are the [Biological Ocean Observer](https://shiny.csir
 
 ### Dr Jennifer McGowan
 
+> INSERT BLURB 
+
 # Theory of conservation planning and spatial prioritisation
 
-> INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
+:::{.callout-note title="Summary of Jen's talk"}
+INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
+:::
 
 Growing demands for food, energy, and infrastructure put marine ecosystems and their services at risk. To protect marine biodiversity against threats from the expanding use of the marine environment, international targets aim to expand the global protected area network to 30% of the oceans by 2030. In addition, United Nations member states recently adopted a treaty for the conservation and sustainable use of biodiversity in the High Seas, an ambitious goal considering \<1% of the High Seas is currently highly protected. Meeting these international targets requires tools and methods facilitating informed decision-making to balance biodiversity conservation with demands of industries using the environment.
 
@@ -76,76 +93,13 @@ Conservation planning allows to prioritize areas important for biodiversity cons
 
 # Common spatial prioritisation tools
 
-> INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
-
-# Installations for hand-on conservation planning.
-
-While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
-
-Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
-
-## Installation
-
-Installing `R` on your machine is straightforward. Follow these steps:
-
-1.  Go to the [CRAN](http://cran.r-project.org) (Comprehensive `R` Archive Network) `R` website. If you type "r" into Google it is the first entry
-2.  Choose to download `R` for Linux, Mac or Windows
-3.  For Windows users, just install "base" and this will link you to the download file
-4.  For Mac users, choose the version relevant to your operating system, noting that if you have a new M1- or M2-powered Mac, you will need to download the Arm version
-5.  If you are a Linux user, you know what to do!
-
-If you already have R installed, please make sure it has been updated recently.
-
-## Installing *RStudio*
-
-We will use *RStudio* in this workshop. *RStudio* is a free front-end to `R` for Windows, Mac or Linux (i.e., `R` is working in the background). It makes working with `R` easier, more productive and more organised, especially for new users. There are other front-ends, but *RStudio* is the most popular. To install:
-
-1.  Go to the [RStudio download website](https://posit.co/download/rstudio-desktop/)
-2.  Choose the *Download* button from the menu at the top, right-hand corner of the page
-3.  Choose the *Download* button beneath *RStudio Desktop*\
-4.  Download the correct version for your operating system
-5.  Install, and you're ready to go!
-
-## Using *RStudio*: A quick guide!
-
-*RStudio* has four main panes each in a quadrant of your screen. You can set what appears in each (through Tools/Options menu in Windows or *RStudio*/Preference on a Mac), but the default has:
-
--   Console (bottom left)
--   Source editor (top left)
--   Environment and History (top right), and
--   Plots, Files, Packages, Help, Viewer (bottom right).
-
-## Installing a solver
-
-Solving conservation problems with `prioritizr`also requires having a solver installed on your machine. Solvers use specific algorithms that use mathematical optimization to find an optimal solution to a problem. There are many different solvers available that differ in terms of their efficiency and cost. The best solvers are usually very expensive to use, but there are some good free ones available. For some more information on solver comparisons, see [this article](https://prioritizr.net/articles/solver_benchmarks.html) by Jeff Hanson, the developer of `prioritizr`.
-
-For the purpose of this workshop, we recommend using on of the freely available solvers that are supported by `prioritizr` and are easily installed, such as the SYMPHONY solver, which can be easily installed using.
-
-```{r}
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("lpsymphony")
-```
-
-Alternatively, if the installation fails for some reason, on your machine, try one of the following options to install either the HiGHS solver or the CBC solver.
-
-```{r}
-install.packages("highs")
-```
-
-```{r}
-if (!require(remotes)) install.packages("remotes")
-remotes::install_github("dirkschumacher/rcbc")
-```
-
-If you are affiliated with an academic institution, you might have access to a free academic license from Gurobi, one of the state-of-the-art solvers out there. While we will not go through a step-by-step guide on how to install Gurobi here, there are many resources on how to install Gurobi available, for example [this installation guide](https://prioritizr.net/articles/gurobi_installation_guide.html) on the `prioritizr` website. We recommend using this solver if you have access to it and want to use conservation planning for projects after this workshop.
-
-## Installing required R packages
+:::{.callout-note title="Summary of Ant's talk"}
+INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
+:::
 
 # Introduction to spatial planning with *prioritizr*
 
-In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home see @sec-appendix1.
+In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home see @sec-appendix2.
 
 ## Study Site - The Galapagos
 
@@ -182,13 +136,17 @@ Define CRS as the [Mollweide Projection](https://desktop.arcgis.com/en/arcmap/la
 cCRS <- "ESRI:54009" 
 ```
 
-> <h2>Types of Spatial Data</h2>
->
-> To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms --- vector or raster.\
-> **Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.\
-> **Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).\
-> A really useful R package for wrangling raster files (and also vectors!) is the **`terra` R package**. **`stars`** is also a good R package and is particularly strong and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online but you shouldn't use this anymore because it's deprecated and (if you haven't already) start transitioning to `terra`!\
-> Spatial data can also be stored as simple data frames, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object. Below, we used tracking data of green turtles collected in Costa Rica from Jaime Restrepo.
+
+:::{.callout-tip title="Types of Spatial Data"}
+To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms --- vector or raster.
+
+**Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.
+
+**Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).\
+A really useful R package for wrangling raster files (and also vectors!) is the **`terra` R package**. **`stars`** is also a good R package and is particularly strong and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online but you shouldn't use this anymore because it's deprecated and (if you haven't already) start transitioning to `terra`!
+
+Spatial data can also be stored as simple data frames, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object. Below, we used tracking data of green turtles collected in Costa Rica from Jaime Restrepo.
+:::
 
 ## Loading the data
 
@@ -282,24 +240,6 @@ targets <- rep(0.3, length(col_name))
 targets <- data.frame(feature = col_name) %>%
   mutate(Category = c(rep("Geomorphic", 12), rep("Tracking Data", 5))) %>%
   mutate(target = if_else(Category == "Tracking Data", 50 / 100, 5 / 100))
-```
-
-## Setup solver
-
-If you already have a solver in your machine, comment these out and make sure that the solver is loaded.
-
-If you are a Windows user, lpsympony might work better. Check their website for more details: https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html
-
-```{r eval=FALSE}
-if (!require(remotes)) install.packages("remotes")
-remotes::install_bioc("lpsymphony")
-```
-
-If you are a Mac/Linux, rcbc might work better. Check their README for more details https://github.com/dirkschumacher/rcbc
-
-```{r eval=FALSE}
-if (!require(remotes)) install.packages("remotes")
-remotes::install_github("dirkschumacher/rcbc")
 ```
 
 ## Run prioritsation
@@ -509,7 +449,7 @@ datEx_soln_LC <- datEx_problem_LC %>%
 
 ## Changing Objective Functions
 
-### Objective 1: Minimum Set
+### Objective 1: Minimum set
 
 ```{r}
 # Targets
@@ -665,9 +605,10 @@ targetsMet_zones <- datEx_soln_zones %>%
   prioritizr::eval_feature_representation_summary(datEx_problem_zones, .)
 ```
 
-> <h2>Beyond code - Apps and communication</h2>
->
-> Opening up conservation planning to a wider audience: communicating results effectively and transparently to stakeholders and managers using R Shiny Apps and MaPP
+:::{.callout-note title="Beyond code - Apps and communication"}
+
+Opening up conservation planning to a wider audience: communicating results effectively and transparently to stakeholders and managers using R Shiny Apps and MaPP
+:::
 
 # Concluding Remarks
 
@@ -693,7 +634,77 @@ Seminoff, J.A., Zárate, P., Coyne, M., Foley, D.G., Parker, D., Lyon, B.N., Dut
 
 Shillinger, G.L., Swithenbank, A.M., Bailey, H., Bograd, S.J., Castelton, M.R., Wallace, B.P., Spotila, J.R., Paladino, F.V., Piedra, R., Block, B.A., 2011. Vertical and horizontal habitat preferences of post-nesting leatherback turtles in the South Pacific Ocean. Marine Ecology Progress Series 422, 275-289.
 
-# Appendix 1: Creating your own spatial data {#sec-appendix1}
+
+# Appendix 1: Software installation {#sec-appendix1}
+
+While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
+
+Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
+
+## Installation
+
+Installing `R` on your machine is straightforward. Follow these steps:
+
+1.  Go to the [CRAN](http://cran.r-project.org) (Comprehensive `R` Archive Network) `R` website. If you type "r" into Google it is the first entry
+2.  Choose to download `R` for Linux, Mac or Windows
+3.  For Windows users, just install "base" and this will link you to the download file
+4.  For Mac users, choose the version relevant to your operating system, noting that if you have a new M1- or M2-powered Mac, you will need to download the Arm version
+5.  If you are a Linux user, you know what to do!
+
+If you already have R installed, please make sure it has been updated recently.
+
+## Installing *RStudio*
+
+We will use *RStudio* in this workshop. *RStudio* is a free front-end to `R` for Windows, Mac or Linux (i.e., `R` is working in the background). It makes working with `R` easier, more productive and more organised, especially for new users. There are other front-ends, but *RStudio* is the most popular. To install:
+
+1.  Go to the [RStudio download website](https://posit.co/download/rstudio-desktop/)
+2.  Choose the *Download* button from the menu at the top, right-hand corner of the page
+3.  Choose the *Download* button beneath *RStudio Desktop*\
+4.  Download the correct version for your operating system
+5.  Install, and you're ready to go!
+
+## Using *RStudio*: A quick guide!
+
+*RStudio* has four main panes each in a quadrant of your screen. You can set what appears in each (through Tools/Options menu in Windows or *RStudio*/Preference on a Mac), but the default has:
+
+-   Console (bottom left)
+-   Source editor (top left)
+-   Environment and History (top right), and
+-   Plots, Files, Packages, Help, Viewer (bottom right).
+
+## Installing a solver
+
+Solving conservation problems with `prioritizr`also requires having a solver installed on your machine. Solvers use specific algorithms that use mathematical optimization to find an optimal solution to a problem. There are many different solvers available that differ in terms of their efficiency and cost. The best solvers are usually very expensive to use, but there are some good free ones available. For some more information on solver comparisons, see [this article](https://prioritizr.net/articles/solver_benchmarks.html) by Jeff Hanson, the developer of `prioritizr`.
+
+For the purpose of this workshop, we recommend using on of the freely available solvers that are supported by `prioritizr` and are easily installed, such as the SYMPHONY solver, which can be easily installed.
+
+If you are a Windows user, lpsympony might work better. Check their website for more details: https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html
+
+```{r eval=FALSE}
+if (!require(remotes)) install.packages("remotes")
+remotes::install_bioc("lpsymphony")
+```
+
+If you are a Mac/Linux, rcbc might work better. Check their README for more details https://github.com/dirkschumacher/rcbc
+
+```{r eval=FALSE}
+if (!require(remotes)) install.packages("remotes")
+remotes::install_github("dirkschumacher/rcbc")
+```
+
+Alternatively, if the installation fails for some reason, on your machine, try installing the HiGHS solver.
+
+```{r eval=FALSE}
+install.packages("highs")
+```
+
+
+If you are affiliated with an academic institution, you might have access to a free academic license from Gurobi, one of the state-of-the-art solvers out there. While we will not go through a step-by-step guide on how to install Gurobi here, there are many resources on how to install Gurobi available, for example [this installation guide](https://prioritizr.net/articles/gurobi_installation_guide.html) on the `prioritizr` website. We recommend using this solver if you have access to it and want to use conservation planning for projects after this workshop.
+
+## Installing required R packages
+
+
+# Appendix 2: Creating your own spatial data {#sec-appendix2}
 
 ## Create a dataset boundary
 
