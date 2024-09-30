@@ -27,7 +27,7 @@ While some software tools for conservation planning (e.g. [Marxan](https://marxa
 
 Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
 
-**Please follow the software installation instructions in @sec-appendix1 before you attend the workshop.**
+**Please follow the software installation instructions in [Appendix 1](index.html#sec-appendix1) before you attend the workshop.**
 
 :::
 
@@ -449,7 +449,7 @@ datEx_soln_LC <- datEx_problem_LC %>%
 
 ## Changing Objective Functions
 
-### Objective 1: Minimum Set
+### Objective 1: Minimum set
 
 ```{r}
 # Targets
