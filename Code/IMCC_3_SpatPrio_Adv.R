@@ -5,7 +5,7 @@
 # Sandra Neubert (s.neubert@uq.edu.au)
 
 # Run prioritisation
-source("IMCC_1_PrepData.R")
+source("Code/IMCC_1_PrepData.R")
 source("IMCC_utils-functions.R")
 
 # Extract feature names

@@ -290,26 +290,26 @@ So far, our solution provides information which PUs should be selected to solve 
 
 ```{r}
 soln <- dat_soln %>%
-  tibble::as_tibble()
+  as_tibble()
 
 # Ferrier score
-ferrier <- prioritizr::eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
-  dplyr::select("total") %>%
-  dplyr::mutate(geometry = dat_soln$geometry) %>%
-  dplyr::rename(score = "total") %>%
-  sf::st_as_sf()
+ferrier <- eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
+  select("total") %>%
+  mutate(geometry = dat_soln$geometry) %>%
+  rename(score = "total") %>%
+  st_as_sf()
 
 # Rarity weighted richness
-# rwr <- prioritizr::eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
-#   dplyr::mutate(geometry = soln$geometry) %>%
-#   dplyr::rename(score = "rwr") %>%
-#   sf::st_as_sf()
+# rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+#   mutate(geometry = soln$geometry) %>%
+#   rename(score = "rwr") %>%
+#   st_as_sf()
 
 # Replacement cost
-# replacement <- prioritizr::eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
-#   dplyr::mutate(geometry = soln$geometry) %>%
-#   dplyr::rename(score = "rc") %>%
-#   sf::st_as_sf()
+# replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+#   mutate(geometry = soln$geometry) %>%
+#   drename(score = "rc") %>%
+#   st_as_sf()
 ```
 
 We can visualise the Ferrier score across the planning domain:
@@ -320,11 +320,41 @@ quant99fs <- round(stats::quantile(ferrier$score, 0.99), 4)
 ferrier$score[ferrier$score >= quant99fs] <- quant99fs
 
 # plot results
-ggplot2::ggplot() +
-  ggplot2::geom_sf(data = ferrier, ggplot2::aes(fill = .data$score), colour = NA)
+ggplot() +
+  geom_sf(data = ferrier, aes(fill = .data$score), colour = NA)
 ```
 
 We can see that the majority of PUs has a very low Ferrier score. This means that according to the Ferrier score these PUs are less important than other PUs in terms of meeting all the targets for all features. In contrast, ome PUs in the center of the planning region have a comparably high Ferrier score. This means that not selecting these PUs in the solution would for example require several other PUs for contributing to the targets similarly.
+
+## Selection frequency
+
+The algorithm that used to solve conservation problems in `prioritizr` (integer linear programming), can find optimal solutions to problems. In Marxan, this is not the case, and therefore the term **selection frequency** is found commonly across literature and practice. The selection frequency represents how many times a PU was selected across a range of solutions, thereby refelecting the importance of PU when meeting targets, but also allowing to explore alternative solutions that might be complementary. In `prioritizr`, we can also explore the selection frequency by using portfolios. 
+
+There are several different portfolio types available in `prioritizr`. Here, we use `add_cuts_portfolio()`, which allows to set the number of attempts to generate a different solution. A solution is excluded from the possible solutions to problem after it has previously obtained.
+
+```{r}
+dat_soln_portfolio <- dat_problem %>%
+  add_cuts_portfolio(5) %>% # create a portfolio of solutions
+  solve.ConservationProblem()
+```
+
+We can now summarize the results to calculate the selection frequency across the 5 attempts and visualize the results.
+
+```{r}
+selFreq <- dat_soln_portfolio %>% # calculate selection frequency
+  st_drop_geometry() %>%
+  mutate(selFreq = as.factor(rowSums(
+   select(., starts_with("solution_"))
+  ))) %>%
+  st_as_sf(geometry = dat_soln_portfolio$geometry) %>%
+  select(selFreq)
+
+ggplot() +
+  geom_sf(data = selFreq, aes(fill = .data$selFreq), colour = NA)
+
+```
+
+We can see that the majority of PUs have never been selected, some have been selected a few times, and some PUs have even been selected every time. This means these PUs are very important to meet the targets for the features.
 
 > <h2>Applications of marine conservation planning</h2>
 >
