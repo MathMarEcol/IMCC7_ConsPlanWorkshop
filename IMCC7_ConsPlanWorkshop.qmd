@@ -358,7 +358,7 @@ datEx_problem_P <- problem(out_sf,
   add_default_solver(gap = 0.2, verbose = FALSE) # Larger optimality gap to speed up code
 ```
 
-Solve conservation problem
+Solve conservation problem.
 
 ```{r}
 datEx_soln_P <- datEx_problem_P %>%
@@ -376,11 +376,13 @@ The selected PUs are more aggregated BUT, in an example with varying cost this m
 
 ### Penalty 2: Species penalty
 
+There are several types of penalties, so it is worthwhile browsing through the `prioritizr` [Reference tab](https://prioritizr.net/reference/index.html#penalties) for more information..
+
 > SHOULD WE ADD AT LEAST ONE OTHER PENALTY EXAMPLE?
 
 ## Adding Constraints
 
-The conservation problems so far were very simplistic. In reality, it is often required to add more complexity.This can be done with constraints.
+The conservation problems so far were relatively simple. In reality, it is often required to add more complexity. A constraint can be added to a conservation planning problem to ensure that solutions exhibit a specific characteristic.
 
 ### Constraint 1: Locked-in areas
 
@@ -395,7 +397,7 @@ mpas <- readRDS(file.path(inputDat, "MPAs", "mpas.rds"))
             colour = NA, size = 0.001, show.legend = FALSE))
 ```
 
-Conservation problem
+The conservation problem.
 
 ```{r}
 datEx_problem_LIC <- problem(out_sf,
@@ -419,6 +421,8 @@ datEx_soln_LIC <- datEx_problem_LIC %>%
 ```
 
 ### Constraint 2: Linear Constraints
+
+Linear constraints can be used to ensure that solutions meet certain criteria. For example, linear constraints can be used to add multiple budgets or to ensure that the total number of planning units allocated to a certain administrative area (e.g., a bioregion) does not exceed a certain threshold (e.g., 30% of its total area).
 
 ```{r}
 # Add another cost for area
@@ -447,9 +451,15 @@ datEx_soln_LC <- datEx_problem_LC %>%
     coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 ```
 
+There are several types of constraints, so it is worthwhile browsing through the `prioritizr` [Reference tab](https://prioritizr.net/reference/constraints.html) for more information.
+
 ## Changing Objective Functions
 
+An objective is used to specify the overall goal of a conservation planning problem. All conservation planning problems involve minimizing or maximizing an objective.
+
 ### Objective 1: Minimum set
+
+The minimum set objective in a conservation planning problem minimizes the cost of the solution whilst ensuring that all targets are met. This objective is similar to the one used in Marxan.
 
 ```{r}
 # Targets
@@ -465,6 +475,8 @@ dfTarget <- splnr_get_featureRep(datEx_soln, datEx_problem,
 ```
 
 ### Objective 2: Minimum shortfall
+
+The aim of the minimum shortfall objective is to find the set of planning units that minimizes the overall (weighted sum) shortfall for the representation targets. This minimizes the fraction of each target that remains unmet, for as many features as possible while staying within a fixed budget.
 
 ```{r}
 # Set up conservation problem
@@ -538,7 +550,7 @@ dfTarget_maxU <- splnr_get_featureRep(datEx_soln_maxU, datEx_problem_maxU,
 ))
 ```
 
-Compare maximum utility objective function with minimum set and minimum shortfall
+We can compare the maximum utility objective function with the minimum set and minimum shortfall objectives.
 
 ```{r}
 (ggTarget_comparison2 <- ggTarget + ggTargetminS + ggTargetmaxU +
@@ -547,7 +559,7 @@ Compare maximum utility objective function with minimum set and minimum shortfal
 
 ## Adding Zones
 
-We will now look how this spatial plan needs to be extended to include multiple management zones by using `zones()`.
+Many real-world conservation problems do not simply involve deciding if an area should be protected or not. In reality, many problems involve a range of different types of management and the goal is to determine which areas should be allocated to which type of management. We can construct such a conservation problem to have different management zones, using the function `zones()`.
 
 ```{r}
 # Create Targets
@@ -584,7 +596,7 @@ datEx_soln_zones <- datEx_problem_zones %>%
   prioritizr::solve.ConservationProblem()
 ```
 
-Examine the solution
+We can examine the solution.
 
 ```{r}
 (gg_soln_zones <- splnr_plot_Solution(
