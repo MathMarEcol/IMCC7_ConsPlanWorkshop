@@ -330,7 +330,7 @@ We can see that the majority of PUs has a very low Ferrier score. This means tha
 
 The algorithm that used to solve conservation problems in `prioritizr` (integer linear programming), can find optimal solutions to problems. In Marxan, this is not the case, and therefore the term **selection frequency** is found commonly across literature and practice. The selection frequency represents how many times a PU was selected across a range of solutions, thereby refelecting the importance of PU when meeting targets, but also allowing to explore alternative solutions that might be complementary. In `prioritizr`, we can also explore the selection frequency by using portfolios. 
 
-There are several different portfolio types available in `prioritizr`. Here, we use `add_cuts_portfolio()`, which allows to set the number of attempts to generate a different solution. A solution is excluded from the possible solutions to problem after it has previously obtained.
+There are several different [portfolio types](https://prioritizr.net/reference/portfolios.html) available in `prioritizr`. Here, we use `add_cuts_portfolio()`, which allows to set the number of attempts to generate a different solution. A solution is excluded from the possible solutions to problem after it has previously obtained.
 
 ```{r}
 dat_soln_portfolio <- dat_problem %>%
