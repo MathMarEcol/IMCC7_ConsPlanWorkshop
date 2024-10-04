@@ -276,6 +276,56 @@ Let us plot the solution and see what it looks like.
 (gg_sol <- splnr_plot_Solution(dat_soln))
 ```
 
+How well were targets met?
+
+```{r}
+targ_coverage <- eval_target_coverage_summary(dat_problem, dat_soln[, "solution_1"])
+```
+
+## Irreplaceability
+
+So far, our solution provides information which PUs should be selected to solve the defined conservation problem, so by meeting the targets for the features whilst minimizing the cost. However, some PUs might be more important in contributing to meeting the targets of the features than others. This concept is known as **Irreplaceability** and essentially measures the value of PUs to achieve the conservation objectives, considering the alternatives.
+
+`Prioritizr` has three built-in [irreplaceability scores](https://prioritizr.net/reference/importance.html) that can be applied to the solution to assess the importance of PUs: The Ferrier score, the rarity weighted richness score and the replacement cost score. We have provided code for running all of them, but we will only show the Ferrier score in this workshop, as it is relatively quick to run. Note that this score only works for conservation problems that include targets in their objective and have a single zone. 
+
+```{r}
+soln <- dat_soln %>%
+  tibble::as_tibble()
+
+# Ferrier score
+ferrier <- prioritizr::eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
+  dplyr::select("total") %>%
+  dplyr::mutate(geometry = dat_soln$geometry) %>%
+  dplyr::rename(score = "total") %>%
+  sf::st_as_sf()
+
+# Rarity weighted richness
+# rwr <- prioritizr::eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+#   dplyr::mutate(geometry = soln$geometry) %>%
+#   dplyr::rename(score = "rwr") %>%
+#   sf::st_as_sf()
+
+# Replacement cost
+# replacement <- prioritizr::eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+#   dplyr::mutate(geometry = soln$geometry) %>%
+#   dplyr::rename(score = "rc") %>%
+#   sf::st_as_sf()
+```
+
+We can visualise the Ferrier score across the planning domain:
+
+```{r}
+#prep data to allow to see the results better
+quant99fs <- round(stats::quantile(ferrier$score, 0.99), 4)
+ferrier$score[ferrier$score >= quant99fs] <- quant99fs
+
+# plot results
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = ferrier, ggplot2::aes(fill = .data$score), colour = NA)
+```
+
+We can see that the majority of PUs has a very low Ferrier score. This means that according to the Ferrier score these PUs are less important than other PUs in terms of meeting all the targets for all features. In contrast, ome PUs in the center of the planning region have a comparably high Ferrier score. This means that not selecting these PUs in the solution would for example require several other PUs for contributing to the targets similarly.
+
 > <h2>Applications of marine conservation planning</h2>
 >
 > Here we present a box on using prioritizr and Marxan in the literature and in practice

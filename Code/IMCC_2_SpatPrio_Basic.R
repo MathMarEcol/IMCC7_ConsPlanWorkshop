@@ -6,7 +6,7 @@
 
 # Preliminaries ------------------------------------------------------
 
-source("IMCC_1_PrepData.R")
+source("Code/IMCC_1_PrepData.R")
 source("utils-functions.R")
 
 # Extract feature names
