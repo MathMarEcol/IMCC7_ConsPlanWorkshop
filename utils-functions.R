@@ -1,7 +1,7 @@
 # IMCC7 Workshop:
 # Conservation Planning for the marine environment: An introduction to tools and techniques
 # Helper functions adapted from spatialplanr R package (mathmarecol.github.io/spatialplanr/)
-# 14/09/2024
+# 14/10/2024
 # Sandra Neubert (s.neubert@uq.edu.au)
 
 splnr_plot_Solution <- function(soln, colorVals = c("#c6dbef", "#3182bd"),
