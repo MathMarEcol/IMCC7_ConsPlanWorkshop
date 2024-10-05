@@ -22,36 +22,35 @@ execute:
   echo: true
 ---
 
-:::{.callout-important}
+::: callout-important
 While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
 
 Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
 
 **Please follow the software installation instructions in [Appendix 1](index.html#sec-appendix1) before you attend the workshop.**
-
 :::
 
 # Overview
 
-Welcome to the **Conservation Planning for the Marine Environment Workshop** at IMCC7. This document will run through all the material (and more!) that we will cover in the workshop. The workshop will teach participants the core principles of systematic conservation planning (SCP) and provide them with basic hands-on skills for various widely used decision-support tools to start applying conservation planning to their own work.
+Welcome to the **Conservation Planning for the Marine Environment Workshop** at IMCC7. This document will run through all the material (and more!) that we will cover in the workshop. The workshop will teach you the core principles of systematic conservation planning (SCP), providing the basic hands-on skills for various widely used decision-support tools to start applying conservation planning to your work.
 
-:::{.callout-tip}
+::: callout-tip
 You can copy the code to your clipboard by clicking the symbol in the top right corner of each code chunk.
 :::
 
 ## Outline for today:
 
-| Topic                                   | Time          | Instructor     |
-|-----------------------------------------|---------------|----------------|
-| Introduction                            | 08:00-08:05   | Ant and Sandra |
-| Theory of Spatial Planning              | 08:05-08:20   | Jen            |
-| Common Spatial Prioritisation tools     | 08:20-08:30   | Ant            |
-| Spatial Planning with *prioritizr*      | 08:30 - 10:00 | Sandra         |
-| Break                                   | 10:00-10:20   |                |
-| Applications of Marine Spatial Planning | 10:20-10:30   | Ant            |
-| Advanced Spatial Prioritisation         | 10:30-12:00   | Sandra         |
-| Going beyond Code                       | 12:00-12:15   | Jase/Alvise    |
-| Wrap up; Q&A                            | 12:15-12:30   | Ant and Sandra |
+| Topic                                   | Time          | Instructor         |
+|-------------------------------------|-----------------|------------------|
+| Introduction                            | 08:00-08:05   | Sandra and Ant     |
+| Theory of Spatial Planning              | 08:05-08:20   | Jen                |
+| Common Spatial Prioritisation tools     | 08:20-08:30   | Ant                |
+| Spatial Planning with *prioritizr*      | 08:30 - 10:00 | Sandra             |
+| Break                                   | 10:00-10:20   |                    |
+| Applications of Marine Spatial Planning | 10:20-10:30   | Ant                |
+| Advanced Spatial Prioritisation         | 10:30-12:00   | Sandra             |
+| Going beyond Code                       | 12:00-12:15   | Jase/Sandra/Alvise |
+| Wrap up; Q&A                            | 12:15-12:30   | Sandra and Ant     |
 
 : {.striped .hover}
 
@@ -59,17 +58,19 @@ You can copy the code to your clipboard by clicking the symbol in the top right 
 
 ### Sandra Neubert
 
-> INSERT BLURB 
+[Sandra Neubert](https://cbcs.centre.uq.edu.au/profile/2659/sandra-neubert){target="_blank"} is a data scientist with an interest in spatial planning and ecosystem modelling. She is currently undertaking a PhD in multiple-use spatial planning in the Global South, as part of a collaborative project between the University of Queensland and the University of Exeter. Her research aims to explore how human activities in the marine environment can be effectively integrated into conservation planning to optimize benefits while minimizing the associated costs for both conservation and sustainable use.
+
+Sandra's experience also includes writing R packages for time-efficient and reproducible spatial planning and Shiny apps to facilitate stakeholder engagement. She is involved in creating tools for multiple projects focused on protected area design, including in the Weddell Sea (Southern Ocean) and across various Indo-Pacific island nations.
 
 ### Professor Anthony Richardson
 
-[Professor Anthony J. Richardson](https://researchers.uq.edu.au/researcher/1567){target="_blank"} uses mathematical, statistical, computational and spatial planning tools to investigate human impacts on our oceans - and to find solutions. Particular foci include: Marine spatial planning (Where best to locate marine protected areas), Developing models of marine ecosystems (How lower trophic levels (plankton) regulate fisheries productivity and carbon sequestration) and, Long-term change in lower trophic levels (plankton) in the ocean
+[Professor Anthony J. Richardson](https://researchers.uq.edu.au/researcher/1567){target="_blank"} uses mathematical, statistical, computational and spatial planning tools to investigate human impacts on our oceans - and to find solutions. Particular foci include: Marine spatial planning (where best to locate marine protected areas), Developing models of marine ecosystems (how plankton regulate fisheries productivity and carbon sequestration) and, long-term change in marine plankton.
 
 Anthony holds a joint position between the School of the Environment at UQ and CSIRO Environment, Australia's national science provider. Anthony runs a dynamic lab at the nexus between marine ecology, conservation science and mathematics. His focus is on using mathematical tools to better conserve biodiversity, predict impacts of climate change, and understand the functioning of marine ecosystems.
 
 ### Dr Jason Everett
 
-[Dr Jason Everett](https://jaseeverett.github.io){target="_blank"} is a biological oceanographer and data scientist. He works on understanding how oceanographic processes structure global pelagic food webs, designing climate-smart marine protected areas and investigating the impact of climate-change on marine ecosystem function. He enjoys working with model output, including oceanographic, climate and size-spectra, and collating large observational datasets to analyse.
+[Dr Jason Everett](https://jaseeverett.github.io){target="_blank"} is a biological oceanographer and data scientist. He works on understanding how oceanographic processes structure global pelagic food webs, designing climate-smart marine protected areas, and investigating the impact of climate-change on marine ecosystem function. He enjoys working with model output, including oceanographic, climate and size-spectra, and collating large observational datasets to analyse.
 
 Recently Jason has been building R-packages and R-shiny visualisation tools and applying novel spatial planning methods to inform marine spatial management. He is currently working on tools for on-the-ground deployment in the Weddell Sea (Antarctica) and various island nations of the Pacific, Indian and Atlantic Oceans.
 
@@ -77,11 +78,11 @@ The latest tools released are the [Biological Ocean Observer](https://shiny.csir
 
 ### Dr Jennifer McGowan
 
-> INSERT BLURB 
+[Dr Jennifer McGowan](https://marxansolutions.org/meet-the-team/){target="_blank"} uses aspects of spatial ecology, economics, operations research and decision theory to help managers and practitioners make transparent, repeatable and robust decisions about the allocation of resources to inform conservation actions on the ground. She applies these skills at global and local scales to help solve a wide array of conservation challenges, from optimizing protected area network design to prioritizing countries for conservation finance initiatives to deliver return-on-investment benefits from biodiversity protection. She also invests significant time into teaching conservation planning theory and training to build capacity in governments, universities and NGOs to embrace systematic conservation planning in their biodiversity and climate adaptation strategies. Jennifer is dedicated to help get decision-support tools into the hands of the people that need them and build institutional knowledge in governments and NGOs who are working hard to save biodiversity and livelihoods on the ground.
 
 # Theory of conservation planning and spatial prioritisation
 
-:::{.callout-note title="Summary of Jen's talk"}
+::: {.callout-note title="Summary of Jen's talk"}
 INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 :::
 
@@ -93,21 +94,21 @@ Conservation planning allows to prioritize areas important for biodiversity cons
 
 # Common spatial prioritisation tools
 
-:::{.callout-note title="Summary of Ant's talk"}
+::: {.callout-note title="Summary of Ant's talk"}
 INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 :::
 
 # Introduction to spatial planning with *prioritizr*
 
-In this workshop, we are going to demonstrate some of the fundamental skills needed in dealing with spatial data using spatial data based in the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them across this markdown. Please also see the Reference section at the end of this markdown file. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home see @sec-appendix2.
+We are going to demonstrate some of the fundamental skills needed in dealing with spatial data based on an example from the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them. Please also see the Reference section at the end of the notes. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home, see @sec-appendix1.
 
 ## Study Site - The Galapagos
 
-Today you are a conservation officer helping plan the Galapagos Marine Reserve. The Galapagos Islands and surrounding waters are recognized globally for their unique species and biodiversity, such as the endemic giant tortoises, Galapagos penguins and marine iguanas. In 1998, the Ecuadorian Government created a marine reserve, covering 138,000 km^2^ around the islands, which at the time, made it the second largest marine reserve in the world. However, many of the species inhabiting Galapagos, such as the blue footed booby (*Sula nebouxii*) and silky shark (*Carcharhinus falciformis*), utilise the open ocean, and range outside the borders of the reserve. Thanks to tracking studies carried out over the quarter century since the creation of the reserve, we know much more about the movements of many of the species in and around the reserve, and can begin to address the question of whether the current reserve design provides adequate protection for them. We also know much more about the distribution of key ocean habitats in our region. Given that industrial and semi-industrial fishing pressure in Ecuador's waters outside the reserve increased dramatically at the turn of the century, and that in recent years, large distant water fishing fleets have been reported in the high seas surrounding Ecuador's Exclusive Economic Zone, the residents of Galapagos are concerned that the existing reserve may not provide sufficient protection to the ocean and wildlife that their livelihoods depend on. They are campaigning for an expansion of the reserve, and have asked us to identify key areas that should be included in their proposed new design. However, the fleets operating around the reserve are concerned that increasing the size of the reserve may affect their livelihoods. In addition to information on key habitats and species movements, we have obtained spatially explicit catch data from the two main fleets - the industrial tuna purse seine fleet and the national longline fleet for large pelagic species
+Today you are a conservation officer helping plan the Galapagos Marine Reserve. The Galapagos Islands and surrounding waters are recognized globally for their unique species and biodiversity, such as the endemic giant tortoises, Galapagos penguins and marine iguanas. In 1998, the Ecuadorian Government created a marine reserve, covering 138,000 km^2^ around the islands, which at the time, made it the second largest marine reserve in the world. However, many of the species inhabiting Galapagos, such as the blue footed booby (*Sula nebouxii*) and silky shark (*Carcharhinus falciformis*), utilise the open ocean, and range outside the borders of the reserve. Thanks to tracking studies carried out over the quarter century since the creation of the reserve, we know much more about the movements of many of the species in and around the reserve, and can begin to address the question of whether the current reserve design provides adequate protection for them. We also know much more about the distribution of key ocean habitats in our region. Given that industrial and semi-industrial fishing pressure in Ecuador's waters outside the reserve increased dramatically at the turn of the century, and that in recent years, large distant water fishing fleets have been reported in the high seas surrounding Ecuador's Exclusive Economic Zone, the residents of Galapagos are concerned that the existing reserve may not provide sufficient protection to the ocean and wildlife that their livelihoods depend on. They are campaigning for an expansion of the reserve, and have asked us to identify key areas that should be included in their proposed new design. However, the fleets operating around the reserve are concerned that increasing the size of the reserve may affect their livelihoods. In addition to information on key habitats and species movements, we have obtained spatially explicit catch data from the two main fleets - the industrial tuna purse seine fleet and the national longline fleet for large pelagic species.
 
 ## Loading preliminaries
 
-It is best practice to load and define all "preliminaries" at the start of your R script. These preliminaries range from R packages to variables used across the R script, but typically it encompasses anything and everything that is used and reused throughout the R script.
+It is best practice to load and define all "preliminaries" at the start of your `R` script. These preliminaries range from R packages to variables used across the `R` script, but typically it encompasses anything and everything that is used and reused throughout the `R` script.
 
 First, we load the necessary R packages. A really good R package to install the versions of the R packages that are in CRAN is **`pacman`**. We are going to install and load packages throughout the course of this workshop, but a common best practice is to install and load all necessary packages to run each script at the top of the R script.
 
@@ -115,20 +116,20 @@ First, we load the necessary R packages. A really good R package to install the 
 install.packages("pacman")
 ```
 
-Load the required packages and code
+Load the required packages and code. The code are custom utility functions that we have written to help automate certain tasks.
 
 ```{r}
 pacman::p_load(tidyverse, sf, rnaturalearth, patchwork, prioritizr)
 source("utils-functions.R")
 ```
 
-Another best practice is to define the input paths as a variable to enhance the reproducibility of your R script. A good R package that breaches the difference in setting file paths in different Operating Systems (OS; e.g., Windows syntax vs Mac), among other cool things, is the **`here`** R package. If you want to read more about the functionality of the package's functions, take a look at [their website](https://here.r-lib.org/).
+Another best practice is to define the input paths as a variable to enhance the reproducibility of your `R` script. A good `R` package that breaches the difficulty of setting file paths in different Operating Systems (e.g., Windows syntax vs Mac), among other cool things, is the **`here`** `R` package. If you want to read more about the functionality of this package, take a look at [their website](https://here.r-lib.org/).
 
 ```{r filepath1}
 inputDat <- file.path("Input") # Define file paths
 ```
 
-Next, we define the Coordinated Reference System (CRS) that will be used throughout this R script. There are different ways to do this, but the two most common ones is using the *EPSG code* and the *PROJ4 strings*. Here's a [pdf](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf) that was prepared by M. Frazier and is freely available online that talks about the CRS syntax really well. It is recommended to use the EPSG code or WKT (Well Known Text), but we find that using the PROJ4 string version of the CRS is useful for plotting maps that are not necessarily centered in the Meridian. But note PROJ4 is technically deprecated now so use with care.
+Next, we define the Coordinated Reference System (CRS) that will be used throughout this `R` script. There are different ways to do this, but the two most common ones are using the *EPSG code* and the *PROJ4 strings*. Here's a [pdf](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf) that was prepared by M. Frazier and is freely available online that clearly explains the CRS syntax well. It is recommended to use the EPSG code or WKT (Well Known Text), but we find that using the PROJ4 string version of the CRS is useful for plotting maps that are not necessarily centered in the Meridian. But note PROJ4 is technically deprecated now so use with care.
 
 Define CRS as the [Mollweide Projection](https://desktop.arcgis.com/en/arcmap/latest/map/projections/mollweide.htm)
 
@@ -136,23 +137,22 @@ Define CRS as the [Mollweide Projection](https://desktop.arcgis.com/en/arcmap/la
 cCRS <- "ESRI:54009" 
 ```
 
+::: {.callout-tip title="Types of Spatial Data"}
+To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and the packages you can use to process them. Spatial data usually takes one of two forms --- vector or raster.
 
-:::{.callout-tip title="Types of Spatial Data"}
-To save time, we have pre-prepared the data for this workshop, but here we provide a brief overview of the types of data you will see, and what packages you can use to process them. Spatial data usually takes one of two forms --- vector or raster.
-
-**Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in R is that you can easily convert the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A really useful R package that everyone should familiarize themselves with to wrangle vector files is the **`sf` R package**.
+**Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in `R` is that you can easily convert between the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A useful `R` package to wrangle vector files is the **`sf` R package**. It is worth familiarizing yourself with this package.\
 
 **Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).\
-A really useful R package for wrangling raster files (and also vectors!) is the **`terra` R package**. **`stars`** is also a good R package and is particularly strong and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online but you shouldn't use this anymore because it's deprecated and (if you haven't already) start transitioning to `terra`!
+A useful R package for wrangling raster files (and also vectors!) is the **`terra` `R` package**. **`stars`** is also a good R package and is particularly flexible and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online, but it is best to not use this package anymore because it's deprecated (i.e., support is discontinued for it). If you haven't already, start transitioning to `terra`!\
 
-Spatial data can also be stored as simple data frames, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object. Below, we used tracking data of green turtles collected in Costa Rica from Jaime Restrepo.
+Spatial data can also be stored as simple dataframes, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object. 
 :::
 
 ## Loading the data
 
 Before we can generate a spatial prioritization, we need to load the spatial data, which we have prepared.
 
-We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km^2^ area. We are defining our projection as the Mollweide Equal-Area projection. The `PUs` object contains planning units represented as spatial polygons (i.e., a `sf::st_sf()` object). This object has two columns that denote the ID (`cellID`) and the outline of each planning unit (`geometry`).
+We are using the Galapagos EEZ as our *planning region* (i.e., study area) and we have already created our *planning units* (i.e., smallest unit of the analysis) as hexagonal grids of 200km^2^ area. Hexagonal grids have the benefit that they fit around coastlines and boundaries better than square grids, but you can use either. We are defining our projection as the Mollweide equal-area projection. The `PUs` object contains planning units represented as spatial polygons (i.e., a `sf::st_sf()` object; Note that when using hexagonal planning units, you need to use `sf`). This object has two columns that denote the ID (`cellID`) and the outline of each planning unit (`geometry`).
 
 ```{r}
 PUs <- st_read(file.path(inputDat, "PUs", "Galapagos_Planning_Units.shp")) %>%
@@ -164,7 +164,7 @@ ggplot() +
   geom_sf(data = PUs)
 ```
 
-The `features` object describes the spatial distribution of the *features* (i.e., the things we care about that would have corresponding *targets*). The feature data are also saved as an `sf::st_sf()` object. In addition to the `cellID` and `geometry` columns, each column corresponds to a feature we are interested in protecting. Values of the features denote the presence (using value of 1) or absence (using value of 0) across the study area.
+The `features` object describes the spatial distribution of the *features* (i.e., the species, habitats or whatever we care about that would have corresponding *targets*). The feature data are also saved as an `sf::st_sf()` object. In addition to the `cellID` and `geometry` columns, each column corresponds to a feature we are interested in protecting. Values of the features denote the presence (using value of 1) or absence (using value of 0) across the study area.
 
 ```{r}
 features <- readRDS(file.path(inputDat, "Features", "Features_Combined.rds"))
@@ -182,7 +182,7 @@ ggplot() +
 
 ## Load Cost
 
-Often conservation and management actions are restricted by costs, therefore we seek to meet targets, while minimising costs and other impacts of industries, communities or other stakeholders. For this scenario, we will use a cost to the fishing industry. This is a layer which reflects the economic value derived within a given cell for the two primary fishing fleets operating in the Galapagos: the artisanal long-line pelagic fleet, and the industrial tuna purse seine fleet.
+As conservation and management actions are often restricted by costs, we therefore seek to meet targets, while minimizing costs and other impacts on industries, communities or other stakeholders. For this scenario, we will use the cost to the fishing industry. This is a layer that reflects the economic value derived within a given cell for the two primary fishing fleets operating in the Galapagos: the artisanal long-line pelagic fleet, and the industrial tuna purse-seine fleet.
 
 Because there is no fishing allowed in the marine reserve, the cost is negligible and so prioritizr will preference meeting targets in these low-cost areas.
 
@@ -195,14 +195,14 @@ ggplot() +
   geom_sf(data = cost, aes(fill = .data$cost))
 ```
 
-Add cost to combined sf object
+Add cost to combined sf object.
 
 ```{r}
 out_sf <- features %>%
   left_join(cost %>% sf::st_drop_geometry(), by = "cellID")
 ```
 
-Get landmass
+Get the landmass.
 
 ```{r}
 landmass <- rnaturalearth::ne_countries(
@@ -219,7 +219,7 @@ landmass <- rnaturalearth::ne_countries(
 
 ## Setup prioritisation
 
-Now, we do the actual spatial prioritization. We are going to use the **R package `prioritizr`** to run the prioritizations. Apart from loading the spatial data, we need to prepare a couple of things for `prioritizr`. We first need to know the "names" (or their identifiers in the dataset) of the *features.*
+Now, we do the actual spatial prioritization. We are going to use the **`R` package `prioritizr`** to run the prioritizations. Apart from loading the spatial data, we need to prepare a couple of things for `prioritizr`. We first need to know the "names" (or their identifiers in the dataset) of the *features.*
 
 ```{r}
 # Extract feature names
@@ -229,7 +229,7 @@ col_name <- features %>%
   colnames()
 ```
 
-We then need the *targets* that we're assigning for each feature. Here, we show how we can assign equal targets for all features and how we can also assign different targets for different features. In a practical conservation planning setting, you'd afford higher targets to features that are more important.
+We then need the *targets* that we are assigning for each feature. Here, we show how we can assign equal targets for all features and how we can also assign different targets for different features. In a practical conservation planning setting, you would set higher targets to features that are more important.
 
 ```{r}
 # Same target for all
@@ -266,14 +266,95 @@ dat_soln <- dat_problem %>%
 # saveRDS(dat_soln, file.path("Output", "Solution1.rds"))
 ```
 
-And there you have it, you have generated a spatial prioritization! "Solving" the conservation "problem" is a bit anticlimactic, but this shows that all the work you've done to generate a spatial prioritization comes from working with spatial data.
+And there you have it, you have generated a spatial prioritization! "Solving" the conservation "problem" is a bit anticlimactic, but this shows that most of the work to generate a spatial prioritization is to preprocess and wrangle the spatial data.
 
-Lets plot the solution and see what it looks like.
+Let us plot the solution and see what it looks like.
 
 ```{r}
-# Plot solution with predefined function
+# Plot solution with a function we have defined (i.e., it is not in prioritizr)
+# This makes a prettier plot than using the default plot function in prioritizr
 (gg_sol <- splnr_plot_Solution(dat_soln))
 ```
+
+How well were targets met?
+
+```{r}
+targ_coverage <- eval_target_coverage_summary(dat_problem, dat_soln[, "solution_1"])
+```
+
+## Irreplaceability
+
+So far, our solution provides information which PUs should be selected to solve the defined conservation problem, so by meeting the targets for the features whilst minimizing the cost. However, some PUs might be more important in contributing to meeting the targets of the features than others. This concept is known as **Irreplaceability** and essentially measures the value of PUs to achieve the conservation objectives, considering the alternatives.
+
+`Prioritizr` has three built-in [irreplaceability scores](https://prioritizr.net/reference/importance.html) that can be applied to the solution to assess the importance of PUs: The Ferrier score, the rarity weighted richness score and the replacement cost score. We have provided code for running all of them, but we will only show the Ferrier score in this workshop, as it is relatively quick to run. Note that this score only works for conservation problems that include targets in their objective and have a single zone. 
+
+```{r}
+soln <- dat_soln %>%
+  as_tibble()
+
+# Ferrier score
+ferrier <- eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
+  select("total") %>%
+  mutate(geometry = dat_soln$geometry) %>%
+  rename(score = "total") %>%
+  st_as_sf()
+
+# Rarity weighted richness
+# rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+#   mutate(geometry = soln$geometry) %>%
+#   rename(score = "rwr") %>%
+#   st_as_sf()
+
+# Replacement cost
+# replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+#   mutate(geometry = soln$geometry) %>%
+#   drename(score = "rc") %>%
+#   st_as_sf()
+```
+
+We can visualise the Ferrier score across the planning domain:
+
+```{r}
+#prep data to allow to see the results better
+quant99fs <- round(stats::quantile(ferrier$score, 0.99), 4)
+ferrier$score[ferrier$score >= quant99fs] <- quant99fs
+
+# plot results
+ggplot() +
+  geom_sf(data = ferrier, aes(fill = .data$score), colour = NA)
+```
+
+We can see that the majority of PUs has a very low Ferrier score. This means that according to the Ferrier score these PUs are less important than other PUs in terms of meeting all the targets for all features. In contrast, ome PUs in the center of the planning region have a comparably high Ferrier score. This means that not selecting these PUs in the solution would for example require several other PUs for contributing to the targets similarly.
+
+## Selection frequency
+
+The algorithm that used to solve conservation problems in `prioritizr` (integer linear programming), can find optimal solutions to problems. In Marxan, this is not the case, and therefore the term **selection frequency** is found commonly across literature and practice. The selection frequency represents how many times a PU was selected across a range of solutions, thereby refelecting the importance of PU when meeting targets, but also allowing to explore alternative solutions that might be complementary. In `prioritizr`, we can also explore the selection frequency by using portfolios. 
+
+There are several different [portfolio types](https://prioritizr.net/reference/portfolios.html) available in `prioritizr`. Here, we use `add_cuts_portfolio()`, which allows to set the number of attempts to generate a different solution. A solution is excluded from the possible solutions to problem after it has previously obtained.
+
+```{r}
+dat_soln_portfolio <- dat_problem %>%
+  add_cuts_portfolio(5) %>% # create a portfolio of solutions
+  solve.ConservationProblem()
+```
+
+We can now summarize the results to calculate the selection frequency across the 5 attempts and visualize the results.
+
+```{r}
+selFreq <- dat_soln_portfolio %>% # calculate selection frequency
+  st_drop_geometry() %>%
+  mutate(selFreq = as.factor(rowSums(
+   select(., starts_with("solution_"))
+  ))) %>%
+  st_as_sf(geometry = dat_soln_portfolio$geometry) %>%
+  select(selFreq)
+
+ggplot() +
+  geom_sf(data = selFreq, aes(fill = .data$selFreq), colour = NA)
+
+```
+
+We can see that the majority of PUs have never been selected, some have been selected a few times, and some PUs have even been selected every time. This means these PUs are very important to meet the targets for the features.
 
 > <h2>Applications of marine conservation planning</h2>
 >
@@ -299,9 +380,9 @@ targets <- data.frame(feature = col_name) %>%
   mutate(target = if_else(Category == "Tracking Data", 50 / 100, 5 / 100))
 ```
 
-## Create basic conservation problem
+## Create the basic conservation problem
 
-Set up conservation problem
+Set up conservation problem.
 
 ```{r}
 datEx_problem <- problem(out_sf,
@@ -327,7 +408,7 @@ Plotting the solution
 ```
 
 ```{r}
-# how were the targets met?
+# How were the targets met?
 targetsMet <- eval_feature_representation_summary(
   datEx_problem, 
   datEx_soln[, "solution_1"])
@@ -337,15 +418,13 @@ There were a lot of individual PUs selected in the solution. This can be problem
 
 ## Adding Penalties
 
-Penalties can be added to the conservation problem as a way to penalize specific conditions or metrics in the planning units. Penalizing certain criteria (e.g. certain environmental conditions, activities etc.) leads to a trade-off with the objective function which aims to minimise the cost. Increasing the "cost" of a planning units through a penalty causes planning units that are not penalized over to be selected over those that are.
+Penalties can be added to the conservation problem as a way to penalize solutions according to a certain metric. Penalizing certain criteria (e.g. certain environmental conditions, activities etc.) leads to a trade-off in the objective function, which aims to minimise the cost. Increasing the "cost" of a planning units through a penalty causes planning units that are not penalized to be selected over those that are.
 
 ### Penalty 1: Boundary penalty
 
-The **boundary penalty** helps the user decide how "clumped" the network should be. Often, it is not feasible to enforce a network of fragmented planning units (as often happens when we optimize with no design constraints). For this reason, we need to adjust the **boundary penalty** to ensure we can minimize fragmentation and aggregate solutions into patches via "clumping." There is no perfect value for the **boundary penalty** so we encourage users to explore different levels with calibration.
+The **boundary penalty** helps the user decide how "clumped" the network should be. Often, it is not feasible to enforce a network of fragmented protected areas (as often happens when we optimize with no design constraints). For this reason, we need to adjust the **boundary penalty** to ensure we can minimize fragmentation and aggregate planning units into patches or clumps. There is no perfect value for the **boundary penalty** so we encourage users to explore different levels to see the effect.
 
-> SANDRA THERE IS NO PENALTY IN THE EXAMPLE BELOW!
-
-Set up conservation problem
+Set up conservation problem.
 
 ```{r}
 datEx_problem_P <- problem(out_sf,
@@ -354,11 +433,12 @@ datEx_problem_P <- problem(out_sf,
 ) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets$target) %>%
+  add_boundary_penalties(0.5) %>%
   add_binary_decisions() %>%
   add_default_solver(gap = 0.2, verbose = FALSE) # Larger optimality gap to speed up code
 ```
 
-Solve conservation problem
+Solve conservation problem.
 
 ```{r}
 datEx_soln_P <- datEx_problem_P %>%
@@ -376,11 +456,13 @@ The selected PUs are more aggregated BUT, in an example with varying cost this m
 
 ### Penalty 2: Species penalty
 
+There are several types of penalties, so it is worthwhile browsing through the `prioritizr` [Reference tab](https://prioritizr.net/reference/index.html#penalties) for more information..
+
 > SHOULD WE ADD AT LEAST ONE OTHER PENALTY EXAMPLE?
 
 ## Adding Constraints
 
-The conservation problems so far were very simplistic. In reality, it is often required to add more complexity.This can be done with constraints.
+The conservation problems so far were relatively simple. In reality, it is often required to add more complexity. A constraint can be added to a conservation planning problem to ensure that solutions exhibit a specific characteristic.
 
 ### Constraint 1: Locked-in areas
 
@@ -395,7 +477,7 @@ mpas <- readRDS(file.path(inputDat, "MPAs", "mpas.rds"))
             colour = NA, size = 0.001, show.legend = FALSE))
 ```
 
-Conservation problem
+The conservation problem.
 
 ```{r}
 datEx_problem_LIC <- problem(out_sf,
@@ -419,6 +501,8 @@ datEx_soln_LIC <- datEx_problem_LIC %>%
 ```
 
 ### Constraint 2: Linear Constraints
+
+Linear constraints can be used to ensure that solutions meet certain criteria. For example, linear constraints can be used to add multiple budgets or to ensure that the total number of planning units allocated to a certain administrative area (e.g., a bioregion) does not exceed a certain threshold (e.g., 30% of its total area).
 
 ```{r}
 # Add another cost for area
@@ -447,9 +531,15 @@ datEx_soln_LC <- datEx_problem_LC %>%
     coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
 ```
 
+There are several types of constraints, so it is worthwhile browsing through the `prioritizr` [Reference tab](https://prioritizr.net/reference/constraints.html) for more information.
+
 ## Changing Objective Functions
 
+An objective is used to specify the overall goal of a conservation planning problem. All conservation planning problems involve minimizing or maximizing an objective.
+
 ### Objective 1: Minimum set
+
+The minimum set objective in a conservation planning problem minimizes the cost of the solution whilst ensuring that all targets are met. This objective is similar to the one used in Marxan.
 
 ```{r}
 # Targets
@@ -465,6 +555,8 @@ dfTarget <- splnr_get_featureRep(datEx_soln, datEx_problem,
 ```
 
 ### Objective 2: Minimum shortfall
+
+The aim of the minimum shortfall objective is to find the set of planning units that minimizes the overall (weighted sum) shortfall for the representation targets. This minimizes the fraction of each target that remains unmet, for as many features as possible while staying within a fixed budget.
 
 ```{r}
 # Set up conservation problem
@@ -538,7 +630,7 @@ dfTarget_maxU <- splnr_get_featureRep(datEx_soln_maxU, datEx_problem_maxU,
 ))
 ```
 
-Compare maximum utility objective function with minimum set and minimum shortfall
+We can compare the maximum utility objective function with the minimum set and minimum shortfall objectives.
 
 ```{r}
 (ggTarget_comparison2 <- ggTarget + ggTargetminS + ggTargetmaxU +
@@ -547,7 +639,7 @@ Compare maximum utility objective function with minimum set and minimum shortfal
 
 ## Adding Zones
 
-We will now look how this spatial plan needs to be extended to include multiple management zones by using `zones()`.
+Many real-world conservation problems do not simply involve deciding if an area should be protected or not. In reality, many problems involve a range of different types of management and the goal is to determine which areas should be allocated to which type of management. We can construct such a conservation problem to have different management zones, using the function `zones()`.
 
 ```{r}
 # Create Targets
@@ -584,7 +676,7 @@ datEx_soln_zones <- datEx_problem_zones %>%
   prioritizr::solve.ConservationProblem()
 ```
 
-Examine the solution
+We can examine the solution.
 
 ```{r}
 (gg_soln_zones <- splnr_plot_Solution(
@@ -605,8 +697,7 @@ targetsMet_zones <- datEx_soln_zones %>%
   prioritizr::eval_feature_representation_summary(datEx_problem_zones, .)
 ```
 
-:::{.callout-note title="Beyond code - Apps and communication"}
-
+::: {.callout-note title="Beyond code - Apps and communication"}
 Opening up conservation planning to a wider audience: communicating results effectively and transparently to stakeholders and managers using R Shiny Apps and MaPP
 :::
 
@@ -634,12 +725,11 @@ Seminoff, J.A., Zárate, P., Coyne, M., Foley, D.G., Parker, D., Lyon, B.N., Dut
 
 Shillinger, G.L., Swithenbank, A.M., Bailey, H., Bograd, S.J., Castelton, M.R., Wallace, B.P., Spotila, J.R., Paladino, F.V., Piedra, R., Block, B.A., 2011. Vertical and horizontal habitat preferences of post-nesting leatherback turtles in the South Pacific Ocean. Marine Ecology Progress Series 422, 275-289.
 
-
 # Appendix 1: Software installation {#sec-appendix1}
 
-While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
+While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in `R` and therefore requires a basic understanding of the `R` programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language. It also allows pre- and post-processing of your data, all in `R.`
 
-Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
+Therefore, we need to install `R`, RStudio, and some other requirements for using `prioritizr`.
 
 ## Installation
 
@@ -651,7 +741,7 @@ Installing `R` on your machine is straightforward. Follow these steps:
 4.  For Mac users, choose the version relevant to your operating system, noting that if you have a new M1- or M2-powered Mac, you will need to download the Arm version
 5.  If you are a Linux user, you know what to do!
 
-If you already have R installed, please make sure it has been updated recently.
+If you already have `R` installed, please make sure it has been updated recently.
 
 ## Installing *RStudio*
 
@@ -674,9 +764,9 @@ We will use *RStudio* in this workshop. *RStudio* is a free front-end to `R` for
 
 ## Installing a solver
 
-Solving conservation problems with `prioritizr`also requires having a solver installed on your machine. Solvers use specific algorithms that use mathematical optimization to find an optimal solution to a problem. There are many different solvers available that differ in terms of their efficiency and cost. The best solvers are usually very expensive to use, but there are some good free ones available. For some more information on solver comparisons, see [this article](https://prioritizr.net/articles/solver_benchmarks.html) by Jeff Hanson, the developer of `prioritizr`.
+Solving conservation problems with `prioritizr` also requires having a solver installed on your machine. Solvers use specific algorithms that use mathematical optimization to find an optimal solution to a problem. There are many different solvers available that differ in terms of their efficiency and cost. The best solvers are usually expensive to use, but there are some good free ones available. For some more information on solver comparisons, see [this article](https://prioritizr.net/articles/solver_benchmarks.html) by Jeff Hanson, the developer of `prioritizr`.
 
-For the purpose of this workshop, we recommend using on of the freely available solvers that are supported by `prioritizr` and are easily installed, such as the SYMPHONY solver, which can be easily installed.
+For the purpose of this workshop, we recommend using one of the freely available solvers that are supported by `prioritizr` and are easily installed, such as the SYMPHONY solver, which can be installed using.
 
 If you are a Windows user, lpsympony might work better. Check their website for more details: https://www.bioconductor.org/packages/release/bioc/html/lpsymphony.html
 
@@ -698,11 +788,9 @@ Alternatively, if the installation fails for some reason, on your machine, try i
 install.packages("highs")
 ```
 
-
-If you are affiliated with an academic institution, you might have access to a free academic license from Gurobi, one of the state-of-the-art solvers out there. While we will not go through a step-by-step guide on how to install Gurobi here, there are many resources on how to install Gurobi available, for example [this installation guide](https://prioritizr.net/articles/gurobi_installation_guide.html) on the `prioritizr` website. We recommend using this solver if you have access to it and want to use conservation planning for projects after this workshop.
+If you are affiliated with an academic institution, you might have access to a free academic license of Gurobi, one of the state-of-the-art solvers out there. While we will not go through a step-by-step guide on how to install Gurobi here, there are many resources on how to install Gurobi, for example [this installation guide](https://prioritizr.net/articles/gurobi_installation_guide.html) on the `prioritizr` website. We recommend using this solver if you have access to it and want to use conservation planning for projects after this workshop.
 
 ## Installing required R packages
-
 
 # Appendix 2: Creating your own spatial data {#sec-appendix2}
 

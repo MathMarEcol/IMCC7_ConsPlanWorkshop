@@ -5,7 +5,7 @@
 # Sandra Neubert (s.neubert@uq.edu.au)
 
 # Run prioritisation
-source("IMCC_1_PrepData.R")
+source("Code/IMCC_1_PrepData.R")
 source("IMCC_utils-functions.R")
 
 # Extract feature names
@@ -62,6 +62,7 @@ datEx_problem_P <- problem(out_sf,
 ) %>%
   add_min_set_objective() %>%
   add_relative_targets(targets$target) %>%
+  add_boundary_penalties(0.1) %>%
   add_binary_decisions() %>%
   add_default_solver(gap = 0.2, verbose = FALSE) # we're adjusting the optimality gap here to speed up the process
 

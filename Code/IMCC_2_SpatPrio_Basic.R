@@ -6,7 +6,7 @@
 
 # Preliminaries ------------------------------------------------------
 
-source("IMCC_1_PrepData.R")
+source("Code/IMCC_1_PrepData.R")
 source("utils-functions.R")
 
 # Extract feature names
@@ -72,48 +72,47 @@ targ_coverage <- eval_target_coverage_summary(dat_problem, dat_soln[, "solution_
 # Irreplaceability -------------------------------------------------------
 
 soln <- dat_soln %>%
-  tibble::as_tibble()
+  as_tibble()
 
-ferrier <- prioritizr::eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
-  dplyr::select("total") %>%
-  dplyr::mutate(geometry = dat_soln$geometry) %>%
-  dplyr::rename(score = "total") %>%
-  sf::st_as_sf()
+# Ferrier score
+ferrier <- eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
+  select("total") %>%
+  mutate(geometry = dat_soln$geometry) %>%
+  rename(score = "total") %>%
+  st_as_sf()
 
-rwr <- prioritizr::eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
-  dplyr::mutate(geometry = soln$geometry) %>%
-  dplyr::rename(score = "rwr") %>%
-  sf::st_as_sf()
+# Rarity weighted richness
+# rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+#   mutate(geometry = soln$geometry) %>%
+#   rename(score = "rwr") %>%
+#   st_as_sf()
 
-# replacement <- prioritizr::eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
-#   dplyr::mutate(geometry = soln$geometry) %>%
-#   dplyr::rename(score = "rc") %>%
-#   sf::st_as_sf()
+# Replacement cost
+# replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+#   mutate(geometry = soln$geometry) %>%
+#   drename(score = "rc") %>%
+#   st_as_sf()
 
+#prep data to allow to see the results better
 quant99fs <- round(stats::quantile(ferrier$score, 0.99), 4)
 ferrier$score[ferrier$score >= quant99fs] <- quant99fs
 
-ggplot2::ggplot() +
-  ggplot2::geom_sf(data = ferrier, ggplot2::aes(fill = .data$score), colour = NA)
-
-quant99fs <- round(stats::quantile(rwr$score, 0.99), 4)
-rwr$score[rwr$score >= quant99fs] <- quant99fs
-
-ggplot2::ggplot() +
-  ggplot2::geom_sf(data = rwr, ggplot2::aes(fill = .data$score), colour = NA)
+# plot results
+ggplot() +
+  geom_sf(data = ferrier, aes(fill = .data$score), colour = NA)
 
 # Portfolios (or no-regret areas) -------------------------------------------------------
 dat_soln_portfolio <- dat_problem %>%
-  prioritizr::add_cuts_portfolio(5) %>% # create a portfolio of solutions
-  prioritizr::solve.ConservationProblem()
+  add_cuts_portfolio(5) %>% # create a portfolio of solutions
+  solve.ConservationProblem()
 
 selFreq <- dat_soln_portfolio %>% # calculate selection frequency
-  sf::st_drop_geometry() %>%
-  dplyr::mutate(selFreq = as.factor(rowSums(
-    dplyr::select(., dplyr::starts_with("solution_"))
+  st_drop_geometry() %>%
+  mutate(selFreq = as.factor(rowSums(
+    select(., starts_with("solution_"))
   ))) %>%
-  sf::st_as_sf(geometry = dat_soln_portfolio$geometry) %>%
-  dplyr::select(selFreq)
+  st_as_sf(geometry = dat_soln_portfolio$geometry) %>%
+  select(selFreq)
 
-ggplot2::ggplot() +
-  ggplot2::geom_sf(data = selFreq, ggplot2::aes(fill = .data$selFreq), colour = NA)
+ggplot() +
+  geom_sf(data = selFreq, aes(fill = .data$selFreq), colour = NA)
