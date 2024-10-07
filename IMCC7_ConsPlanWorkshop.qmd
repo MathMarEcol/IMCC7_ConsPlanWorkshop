@@ -68,15 +68,45 @@ The latest tools released are the [Biological Ocean Observer](https://shiny.csir
 
 > INSERT PARAGRAPH SUMMARISING JEN'S TALK AND ANY ASSOCIATED INFORMATION AND WEBLINKS
 
-Growing demands for food, energy, and infrastructure put marine ecosystems and their services at risk. To protect marine biodiversity against threats from the accelerating use of the marine environment, international targets aim to expand the global protected area network to 30% of the oceans by 2030. In addition, United Nations member states recently adopted a treaty for the conservation and sustainable use of biodiversity in the High Seas, an ambitious goal considering \<1% of the High Seas is currently highly protected. Meeting these international targets requires tools and methods that facilitate informed decision-making to balance biodiversity conservation with demands of industries using the environment.
+Growing demands for food, energy, and infrastructure put marine ecosystems and their services at risk. To protect marine biodiversity against threats from the accelerating use of the marine environment, international targets aim to expand the global protected area network to 30% of the oceans by 2030. The Kunming-Montreal Global Biodiversity Framework of the Convention on Biological Diversity sets out the 2030 global agenda for nature conservation. Under this framework, 196 countries have committed to protect 30% of the planet through an ecologically-representative, well-connected, and equitably governed system of area-based conservation measures, as well as to restore 30% of degraded ecosystems (Targets 2 & 3) while adapting to climate change. Note that “biodiversity inclusive spatial planning” features prominently in the framework’s Target 1 “Ensure that all areas are under participatory, integrated, and biodiversity inclusive spatial planning and/or effective management processes…”.
+
+In addition, United Nations member states recently adopted a treaty for the conservation and sustainable use of biodiversity in the High Seas, an ambitious goal considering \<1% of the High Seas is currently highly protected. Meeting these international targets requires tools and methods that facilitate informed decision-making to balance biodiversity conservation with demands of industries using the environment.
 
 Conservation planning helps stakeholders, the community and planners to work together to identify their resources and accomplish multiple objectives that are best for the land, water, and people (https://marxansolutions.org/whatisconservationplanning/). Conservation planning allows the prioritization of areas important for biodiversity conservation whilst minimizing economic costs, and to quantify ecological and economic impacts of decisions. Conservation planning tools are applicable to a wide range of conservation problems across marine, freshwater and terrestrial ecosystems. These problem can vary in spatial scale, type of biodiversity, managed uses, management actions, and budget. This workshop will teach you the core principles of conservation planning, thus providing the basic hands-on skills to formulate, solve, and interpret conservation problems and their solutions so you can apply conservation planning in your work.
 
 *Spatial prioritization* refers to quantitative methods that aid in identifying priority areas for a particular action (e.g., conservation) while meeting certain criteria (e.g., meeting area-based targets). In a conservation context, spatial prioritization is used to identify areas for conservation. It is a step in a bigger, more elaborate process called *systematic conservation planning* that refers to the structured process of identifying, assigning, and monitoring areas for protection, conservation, or restoration. Read more about systematic conservation planning and spatial prioritization in [Margules and Pressey (2000)](https://www.nature.com/articles/35012251) and [Tallis et al. (2021)](https://nyaspubs.onlinelibrary.wiley.com/doi/10.1111/nyas.14651).
 
-# Common spatial prioritisation tools
 
-> INSERT PARAGRAPH OR TWO SUMMARISING ANT'S WORKSHOP PRESENTATION AND ANY ASSOCIATED INFORMATION AND WEBLINKS
+# Important terminology
+Here are some key terms that you will need to know to run a prioritization.
+
+**Planning region**: This is the spatial domain. It is subdivided into planning units.
+
+**Planning units**: Spatial cells within the planning region, which are usually regular (grids or hexagons) or irregular shapes (e.g., bioregions).
+
+**Planning problem**: This specifies all the information needed to define a spatial prioritization. This includes the planning region, the planning units, the features, costs, targets, and the objective function.
+
+**Solution**: The output of the planning problem. Solutions are the protected areas selected. This is either binary (each planning unit is selected (1) or not selected (0) in the reserve system) or can be a proportion of each planning unit 
+
+**Feature**: The elements of interest (e.g., species, habitat, process, cultural site) that you want to protect in the reserve system by setting a target for each.
+
+**Target**: The minimum quantity or proportion of each conservation feature in the planning region to be included in the solution (e.g., protect 30% of each habitat type in the reserve system).
+
+**Cost**: Reflects the economic implications of including a planning unit in the reserve (along the coast it could be cost of land acquisition; in the ocean it could be the opportunity cost of lost fisheries revenue). Opportunity costs other than fishing can be included, such as for mining, oil/gas, aggregate extraction and shipping.
+
+**Objective function**: Specifies the overall goal of a conservation planning problem. All conservation planning problems involve minimizing or maximizing an objective function. The standard objective function in Marxan (and one of the eight objectives in prioritizr) is the minimum set objective, which conserves enough of each feature to meet its target, while minimizing the overall cost of the reserve network.
+
+
+# Common spatial prioritization tools
+The most common tools for prioritization are Marxan, Zonation and prioritizr. At their core, these optimization tools all aim to address the conservation planning principles of CARE (Connectivity, Adequacy, Representativeness, Efficiency). Marxan and prioritizr are similar in what they do but differ in how they do it. Zonation is quite different in what it does. Each tool uses different algorithms to solve the conservation planning problem. The Table below is an opinionated summary of the different tools.
+
+
+**Software** | **Algorithm** | **Approach** | **Strengths** | **Weaknesses**
+|---------|----------|-----------|----------------|----------------|
+|Marxan|Simulated annealing|Uses target-based planning|Free; Easy to use (does not require programming); Widely used; Has spawned more complex relatives that deals with connectivity (MarxanConnect), probability (MarProb), zones (Marxan with Zones)|Approximate solutions; Slow for large problems; Limited ability for customization; Does not allow a workflow from data wrangling to visualization|
+|prioritizr|Integer linear programming|Uses target-based planning|Free; Fast; Solves the exact planning problem; Flexible problem definition; Allows a workflow from data wrangling to visualization; Can handle more complex planning problems than Marxan|Requires knowledge of coding; Fastest solvers are expensive|
+|Zonation|Optimization algorithms|Usually uses non target-based planning|Free; Easy to use (does not require programming); Ranks planning units in terms of their conservation priority|Limited ability for customization; Generally does not satisfy targets at minimum cost; Bespoke graphics but does not allow a workflow from data wrangling to visualization|
+
 
 # Installations for hand-on conservation planning.
 
@@ -131,7 +161,14 @@ BiocManager::install("lpsymphony")
 Alternatively, if the installation fails for some reason, on your machine, try one of the following options to install either the HiGHS solver or the CBC solver.
 
 ```{r}
-install.packages("highs")
+# install.packages("highs")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("highs")
+
+BiocManager::install("BiocManager")
+```
+
+
 ```
 
 ```{r}
@@ -259,7 +296,7 @@ landmass <- rnaturalearth::ne_countries(
   sf::st_transform(cCRS)
 ```
 
-## Setup prioritisation
+## Setup prioritization
 
 Now, we do the actual spatial prioritization. We are going to use the **`R` package `prioritizr`** to run the prioritizations. Apart from loading the spatial data, we need to prepare a couple of things for `prioritizr`. We first need to know the "names" (or their identifiers in the dataset) of the *features.*
 
