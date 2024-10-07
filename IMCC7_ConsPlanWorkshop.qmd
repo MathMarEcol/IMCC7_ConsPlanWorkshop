@@ -840,7 +840,7 @@ dat_problem <- problem(out_sf,
   add_default_solver(verbose = FALSE)
 ```
 
-## Run prioritisation
+## Run prioritization
 
 Solve and plot conservation problem
 
