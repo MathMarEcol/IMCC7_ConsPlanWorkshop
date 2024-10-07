@@ -233,22 +233,15 @@ splnr_plot_featureRep <- function(df, category = NA,
     ggplot2::labs(title = plotTitle, x = "Feature", y = "Representation of features \nin total selected area (%)") +
     ggplot2::theme_bw() +
     ggplot2::scale_y_continuous(limits = c(0, ymax <- max(df$relative_held, na.rm = TRUE) + 10),
-                                expand = c(0, 0)) + # only works for min shortfall without incidental yet
+                                expand = c(0, 0)) +
     ggplot2::scale_fill_manual(
-      values = colr#,
-     # guide = ggplot2::guide_legend(nrow = nr)
+      values = colr
     ) +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, colour = "black"),
-      # axis.text.y = ggplot2::element_text(size = 16, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
-      # axis.title.y = ggplot2::element_text(size = 16),
       legend.title = ggplot2::element_blank(),
-      # legend.text = ggplot2::element_text(size = 16),
-     # legend.position.inside = c(0.5, 0.95),
-      #legend.direction = "horizontal",
       legend.background = ggplot2::element_rect(fill = "NA")
-      # title = ggplot2::element_text(size = 16)
     )
 
   if (showTarget) {
