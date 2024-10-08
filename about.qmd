@@ -1,0 +1,27 @@
+---
+title: "About Us"
+---
+
+### Sandra Neubert
+
+[Sandra Neubert](https://cbcs.centre.uq.edu.au/profile/2659/sandra-neubert){target="_blank"} is a data scientist with an interest in spatial planning and ecosystem modelling. She is currently undertaking a PhD in multiple-use spatial planning in the Global South, as part of a collaborative project between the University of Queensland and the University of Exeter. Her research aims to explore how human activities in the marine environment can be effectively integrated into conservation planning to optimize benefits while minimizing the associated costs for both conservation and sustainable use.
+
+Sandra's experience also includes writing R packages for time-efficient and reproducible spatial planning and Shiny apps to facilitate stakeholder engagement. She is involved in creating tools for multiple projects focused on protected area design, including in the Weddell Sea (Southern Ocean) and across various Indo-Pacific island nations.
+
+### Professor Anthony Richardson
+
+[Professor Anthony J. Richardson](https://researchers.uq.edu.au/researcher/1567){target="_blank"} uses mathematical, statistical, computational and spatial planning tools to investigate human impacts on our oceans - and to find solutions. Particular foci include: Marine spatial planning (where best to locate marine protected areas), Developing models of marine ecosystems (how plankton regulate fisheries productivity and carbon sequestration) and, long-term change in marine plankton.
+
+Anthony holds a joint position between the School of the Environment at UQ and CSIRO Environment, Australia's national science provider. Anthony runs a dynamic lab at the nexus between marine ecology, conservation science and mathematics. His focus is on using mathematical tools to better conserve biodiversity, predict impacts of climate change, and understand the functioning of marine ecosystems.
+
+### Dr Jason Everett
+
+[Dr Jason Everett](https://jaseeverett.github.io){target="_blank"} is a biological oceanographer and data scientist. He works on understanding how oceanographic processes structure global pelagic food webs, designing climate-smart marine protected areas, and investigating the impact of climate-change on marine ecosystem function. He enjoys working with model output, including oceanographic, climate and size-spectra, and collating large observational datasets to analyse.
+
+Recently Jason has been building R-packages and R-shiny visualisation tools and applying novel spatial planning methods to inform marine spatial management. He is currently working on tools for on-the-ground deployment in the Weddell Sea (Antarctica) and various island nations of the Pacific, Indian and Atlantic Oceans.
+
+The latest tools released are the [Biological Ocean Observer](https://shiny.csiro.au/BioOceanObserver/){target="_blank"}, in conjunction with the r-package [planktonr](https://planktonteam.github.io/planktonr/){target="_blank"}.
+
+### Dr Jennifer McGowan
+
+[Dr Jennifer McGowan](https://marxansolutions.org/meet-the-team/){target="_blank"} uses aspects of spatial ecology, economics, operations research and decision theory to help managers and practitioners make transparent, repeatable and robust decisions about the allocation of resources to inform conservation actions on the ground. She applies these skills at global and local scales to help solve a wide array of conservation challenges, from optimizing protected area network design to prioritizing countries for conservation finance initiatives to deliver return-on-investment benefits from biodiversity protection. She also invests significant time into teaching conservation planning theory and training to build capacity in governments, universities and NGOs to embrace systematic conservation planning in their biodiversity and climate adaptation strategies. Jennifer is dedicated to help get decision-support tools into the hands of the people that need them and build institutional knowledge in governments and NGOs who are working hard to save biodiversity and livelihoods on the ground.

@@ -1,4 +1,45 @@
 project:
-  title: "IMCC7_ConsPlanWorkshop"
-editor: source
+  type: website
+  output-dir: docs
 
+website:
+  # page-navigation: true
+  title: "Conservation Planning Workshop"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About Us
+      - href: notes.qmd
+        text: Course Notes
+      - href: software.qmd
+        text: Appendix 1. Software Install
+      - href: data.qmd
+        text: Appendix 2. Create Data
+
+  page-footer:
+    center: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
+    left:  "&copy; Website Dr Jason D. Everett 2024"
+
+resources:
+    - "data/*"
+
+format:
+  html:
+    # theme: cosmo
+    # theme: spacelab
+    theme: yeti
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    toc-expand: 2
+    toc-location: right
+    code-copy: true
+    code-overflow: wrap
+    link-external-newwindow: true
+    link-external-icon: true
+
+editor: visual
+
+lightbox: true
