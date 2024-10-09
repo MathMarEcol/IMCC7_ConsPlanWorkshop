@@ -1,0 +1,36 @@
+---
+title: "Conservation Planning for the Marine Environment"
+subtitle: "An introduction to tools and techniques"
+---
+
+::: callout-important
+While some software tools for conservation planning (e.g. [Marxan](https://marxansolutions.org/) or [Zonation](https://zonationteam.github.io/Zonation5/)) do not require coding skills beyond GIS skills for input data preparation, `prioritizr`, the tool that we will be using today, is written in R and therefore requires a basic understanding of the R programming language. This allows for fast and reproducible workflows by exploiting the advantages of the programming language.
+
+Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
+
+**Please follow the software installation instructions in [Appendix 1](software.qmd) before you attend the workshop.**
+:::
+
+# Overview
+
+Welcome to the **Conservation Planning for the Marine Environment Workshop** at IMCC7. This document will run through all the material (and more!) that we will cover in the workshop. The workshop will teach you the core principles of systematic conservation planning (SCP), providing the basic hands-on skills for various widely used decision-support tools to start applying conservation planning to your work.
+
+::: callout-tip
+You can copy the code to your clipboard by clicking the symbol in the top right corner of each code chunk.
+:::
+
+## Outline for today:
+
+| Topic                                   | Time          | Instructor         |
+|------------------------------------|------------------|------------------|
+| Introduction                            | 08:00-08:05   | Sandra and Ant     |
+| Theory of Spatial Planning              | 08:05-08:20   | Jen                |
+| Common Spatial Prioritization tools     | 08:20-08:30   | Ant                |
+| Spatial Planning with *prioritizr*      | 08:30 - 10:00 | Sandra             |
+| Break                                   | 10:00-10:20   |                    |
+| Applications of Marine Spatial Planning | 10:20-10:30   | Ant                |
+| Advanced Spatial Prioritization         | 10:30-12:00   | Sandra             |
+| Going beyond Code                       | 12:00-12:15   | Ant/Sandra/Alvise |
+| Wrap up; Q&A                            | 12:15-12:30   | Sandra and Ant     |
+
+: {.striped .hover}
