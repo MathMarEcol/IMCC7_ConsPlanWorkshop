@@ -3,9 +3,9 @@ title: "Conservation Planning for the Marine Environment"
 subtitle: "An introduction to tools and techniques"
 ---
 
-### Workshop Data
+# Workshop Data
 
-The data for today are available [here](data/Day3_MixedAdditiveModelling.zip){target="_blank"}.
+<!-- The data for today are available [here](data/Day3_MixedAdditiveModelling.zip){target="_blank"}. -->
 
 # Theory of conservation planning and spatial prioritization
 
@@ -49,7 +49,7 @@ The most common tools for prioritization are Marxan, Zonation and prioritizr. At
 
 # Introduction to spatial planning with *prioritizr*
 
-We are going to demonstrate some of the fundamental skills needed in dealing with spatial data based on an example from the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them. Please also see the Reference section at the end of the notes. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home, see @sec-appendix1.
+We are going to demonstrate some of the fundamental skills needed in dealing with spatial data based on an example from the Galapagos Exclusive Economic Zone (EEZ). The data used in this workshop are not ours and we attribute the source of the data when we use them. Please also see the Reference section at the end of the notes. This data comes pre-prepared in the correct format. If you would like to see an example of how to create some *"fake"* data to ensure you can work with your own data when you get home, see [Appendix 2](data.qmd).
 
 ## Study Site - The Galapagos
 
@@ -380,7 +380,7 @@ datEx_problem_P <- problem(out_sf,
   add_relative_targets(targets$target) %>%
   add_boundary_penalties(0.5) %>%
   add_binary_decisions() %>%
-  add_default_solver(gap = 0.2, verbose = FALSE) # Larger optimality gap to speed up code
+  add_default_solver(gap = 0.5, verbose = FALSE) # Larger optimality gap to speed up code
 ```
 
 Solve conservation problem.

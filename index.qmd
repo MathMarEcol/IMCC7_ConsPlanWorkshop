@@ -8,7 +8,7 @@ While some software tools for conservation planning (e.g. [Marxan](https://marxa
 
 Therefore, we need to install R, RStudio, and some other requirements for using `prioritizr`.
 
-**Please follow the software installation instructions in [Appendix 1](index.html#sec-appendix1) before you attend the workshop.**
+**Please follow the software installation instructions in [Appendix 1](software.qmd) before you attend the workshop.**
 :::
 
 # Overview
@@ -30,7 +30,7 @@ You can copy the code to your clipboard by clicking the symbol in the top right 
 | Break                                   | 10:00-10:20   |                    |
 | Applications of Marine Spatial Planning | 10:20-10:30   | Ant                |
 | Advanced Spatial Prioritization         | 10:30-12:00   | Sandra             |
-| Going beyond Code                       | 12:00-12:15   | Jase/Sandra/Alvise |
+| Going beyond Code                       | 12:00-12:15   | Ant/Sandra/Alvise |
 | Wrap up; Q&A                            | 12:15-12:30   | Sandra and Ant     |
 
 : {.striped .hover}

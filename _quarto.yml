@@ -23,14 +23,14 @@ website:
     left:  "&copy; Website Dr Jason D. Everett 2024"
 
 resources:
-    - "data/*"
+    - "resources/*"
 
 format:
   html:
     # theme: cosmo
     # theme: spacelab
     theme: yeti
-    css: styles.css
+    # css: styles.css
     toc: true
     toc-depth: 3
     toc-expand: 2
@@ -39,6 +39,7 @@ format:
     code-overflow: wrap
     link-external-newwindow: true
     link-external-icon: true
+    embed-resources: true
 
 editor: visual
 

@@ -36,6 +36,17 @@ We will use *RStudio* in this workshop. *RStudio* is a free front-end to `R` for
 -   Environment and History (top right), and
 -   Plots, Files, Packages, Help, Viewer (bottom right).
 
+## Installing required R packages
+
+ A really good R package to install the versions of the R packages that are in CRAN is **`pacman`**. We are going to install and load packages throughout the course of this workshop, but a common best practice is to install and load all necessary packages to run each script at the top of the R script.
+
+ To work through these notes you will need to install the add-on packages `tidyr`, `ggplot2` and `dplyr`. Or you can just get the package tidyverse which has these and more. We also need some packages for spatial data and spatial data wrangling (`sf`and `rnaturalearth`) and a few more for data visualisation (`patchwork` and `viridis`). And of course we need `prioritizr`, which we will use for conservation planning.
+
+ ```{r, eval=FALSE}
+ install.packages("pacman")
+ pacman::p_load(tidyverse, sf, rnaturalearth, patchwork, prioritizr, viridis)
+ ```
+
 ## Installing a solver
 
 Solving conservation problems with `prioritizr` also requires having a solver installed on your machine. Solvers use specific algorithms that use mathematical optimization to find an optimal solution to a problem. There are many different solvers available that differ in terms of their efficiency and cost. The best solvers are usually expensive to use, but there are some good free ones available. For some more information on solver comparisons, see [this article](https://prioritizr.net/articles/solver_benchmarks.html) by Jeff Hanson, the developer of `prioritizr`.
@@ -63,5 +74,3 @@ install.packages("highs")
 ```
 
 If you are affiliated with an academic institution, you might have access to a free academic license of Gurobi, one of the state-of-the-art solvers out there. While we will not go through a step-by-step guide on how to install Gurobi here, there are many resources on how to install Gurobi, for example [this installation guide](https://prioritizr.net/articles/gurobi_installation_guide.html) on the `prioritizr` website. We recommend using this solver if you have access to it and want to use conservation planning for projects after this workshop.
-
-## Installing required R packages
