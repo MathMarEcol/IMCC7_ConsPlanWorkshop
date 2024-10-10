@@ -482,10 +482,6 @@ datEx_soln_LIC <- datEx_problem_LIC %>%
 Linear constraints can be used to ensure that solutions meet certain criteria. For example, linear constraints can be used to add multiple budgets or to ensure that the total number of planning units allocated to a certain administrative area (e.g., a bioregion) does not exceed a certain threshold (e.g., 30% of its total area).
 
 ```{r}
-# Add another cost for area
-out_sf <- out_sf %>%
-  mutate(cost_area = rep(1, nrow(.)))
-
 # Set up conservation problem
 datEx_problem_LC <- problem(out_sf,
                             features = col_name,
