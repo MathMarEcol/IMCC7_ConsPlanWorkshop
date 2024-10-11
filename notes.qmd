@@ -7,7 +7,7 @@ execute:
 
 # Workshop Data
 
-<!-- The data for today are available [here](data/Day3_MixedAdditiveModelling.zip){target="_blank"}. -->
+The data and code for the workshop are available [here](resources/IMCC7_ConsPlanWorkshop.zip){target="_blank"}.
 
 # Theory of conservation planning and spatial prioritization
 
