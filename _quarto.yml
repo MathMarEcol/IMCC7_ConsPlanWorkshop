@@ -17,6 +17,8 @@ website:
         text: Appendix 1. Software Install
       - href: data.qmd
         text: Appendix 2. Create Data
+      - href: mapp.qmd
+        text: Appendix 3. MaPP
 
   page-footer:
     center: "This page is built with ❤️ and [Quarto](https://quarto.org/)."

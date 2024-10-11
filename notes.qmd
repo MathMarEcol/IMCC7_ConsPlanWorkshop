@@ -1,11 +1,13 @@
 ---
 title: "Conservation Planning for the Marine Environment"
 subtitle: "An introduction to tools and techniques"
+execute: 
+  cache: true
 ---
 
 # Workshop Data
 
-<!-- The data for today are available [here](data/Day3_MixedAdditiveModelling.zip){target="_blank"}. -->
+The data and code for the workshop are available [here](resources/IMCC7_ConsPlanWorkshop.zip){target="_blank"}.
 
 # Theory of conservation planning and spatial prioritization
 
@@ -42,7 +44,7 @@ Here are some key terms that you will need to know to run a prioritization.
 The most common tools for prioritization are Marxan, Zonation and prioritizr. At their core, these optimization tools all aim to address the conservation planning principles of CARE (Connectivity, Adequacy, Representativeness, Efficiency). Marxan and prioritizr are similar in what they do but differ in how they do it. Zonation is quite different in what it does. Each tool uses different algorithms to solve the conservation planning problem. The Table below is an opinionated summary of the different tools.
 
 | **Software** | **Algorithm**              | **Approach**                           | **Strengths**                                                                                                                                                                                    | **Weaknesses**                                                                                                                                                             |
-|--------------|--------------|--------------|---------------|---------------|
+|---------------|---------------|---------------|---------------|---------------|
 | Marxan       | Simulated annealing        | Uses target-based planning             | Free; Easy to use (does not require programming); Widely used; Has spawned more complex relatives that deals with connectivity (MarxanConnect), probability (MarProb), zones (Marxan with Zones) | Approximate solutions; Slow for large problems; Limited ability for customization; Does not allow a workflow from data wrangling to visualization                          |
 | prioritizr   | Integer linear programming | Uses target-based planning             | Free; Fast; Solves the exact planning problem; Flexible problem definition; Allows a workflow from data wrangling to visualization; Can handle more complex planning problems than Marxan        | Requires knowledge of coding; Fastest solvers are expensive                                                                                                                |
 | Zonation     | Optimization algorithms    | Usually uses non target-based planning | Free; Easy to use (does not require programming); Ranks planning units in terms of their conservation priority                                                                                   | Limited ability for customization; Generally does not satisfy targets at minimum cost; Bespoke graphics but does not allow a workflow from data wrangling to visualization |
@@ -92,7 +94,7 @@ To save time, we have pre-prepared the data for this workshop, but here we provi
 **Vector data** is represented as points, lines, or polygons. Raster data is represented in grids of cells (i.e., pixels). There are pros and cons to each of the data formats, but the beauty of dealing with spatial data in `R` is that you can easily convert between the two forms of spatial data. Here, we show how you can load vector and raster data saved in different file formats. Vector data is usually saved as a shapefile (`.shp`) and attached to this are other files that contain the metadata (e.g., `.shx`, `.dbf`). All of these are usually in one folder. A useful `R` package to wrangle vector files is the **`sf` R package**. It is worth familiarizing yourself with this package.\
 
 **Raster data** is usually saved as a GeoTIFF (Geo Tagged Image File Formats; `.tiff`). Another file format that is really good at compressing/storing large amounts of data is the netCDF (Network Common Data Form; `.nc`).\
-A useful R package for wrangling raster files (and also vectors!) is the **`terra` `R` package**. **`stars`** is also a good R package and is particularly flexible and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online, but it is best to not use this package anymore because it's deprecated (i.e., support is discontinued for it). If you haven't already, start transitioning to `terra`!\
+A useful R package for wrangling raster files (and also vectors!) is the **`terraR` package**. **`stars`** is also a good R package and is particularly flexible and fast when dealing with rasters saved as netCDFs. Note that `raster` is an old R package that you might find in tutorials online, but it is best to not use this package anymore because it's deprecated (i.e., support is discontinued for it). If you haven't already, start transitioning to `terra`!\
 
 Spatial data can also be stored as simple dataframes, with rows as either the vector units (points, lines, polygons) or raster units (grid cells) and the columns as the geographic coordinates of the units (latitude/longitude) and the attributes of each unit. Thus, we can load a simple `.csv` file with the geographic coordinates and transform it into an `sf` object (following an `sf` R package workflow) or a `SpatRast`/`SpatVect` (following a `terra` R package workflow). Here, we convert the data frame into an `sf` object.
 :::
@@ -211,11 +213,15 @@ Then, we solve the prioritization using `solve.ConservationProblem()`.
 ```{r}
 dat_soln <- dat_problem %>%
   solve.ConservationProblem()
-
-# saveRDS(dat_soln, file.path("Output", "Solution1.rds"))
 ```
 
 And there you have it, you have generated a spatial prioritization! "Solving" the conservation "problem" is a bit anticlimactic, but this shows that most of the work to generate a spatial prioritization is to preprocess and wrangle the spatial data.
+
+If you want to save the output for later use, you can do this in the normal way for R.
+
+```{r eval=FALSE}
+saveRDS(dat_soln, file.path("Output", "Solution1.rds"))
+```
 
 Let us plot the solution and see what it looks like.
 
@@ -247,18 +253,21 @@ ferrier <- eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
   mutate(geometry = dat_soln$geometry) %>%
   rename(score = "total") %>%
   st_as_sf()
+```
 
+We won't run these today, but the other two irreplaceability scores are shown here.
+```{r eval=FALSE}
 # Rarity weighted richness
-# rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
-#   mutate(geometry = soln$geometry) %>%
-#   rename(score = "rwr") %>%
-#   st_as_sf()
+rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+  mutate(geometry = soln$geometry) %>%
+  rename(score = "rwr") %>%
+  st_as_sf()
 
 # Replacement cost
-# replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
-#   mutate(geometry = soln$geometry) %>%
-#   drename(score = "rc") %>%
-#   st_as_sf()
+replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+  mutate(geometry = soln$geometry) %>%
+  drename(score = "rc") %>%
+  st_as_sf()
 ```
 
 We can visualise the Ferrier score across the planning domain:
@@ -307,7 +316,7 @@ We can see that the majority of PUs have never been selected, some have been sel
 
 # Advanced Spatial prioritization
 
-Preliminaries
+## Preliminaries
 
 ```{r}
 # Extract feature names
@@ -399,7 +408,43 @@ datEx_soln_P <- datEx_problem_P %>%
 
 The selected PUs are more aggregated BUT, in an example with varying cost this might also lead to a more expensive solution
 
-There are several types of penalties, so it is worthwhile browsing through the `prioritizr` [Reference tab](https://prioritizr.net/reference/index.html#penalties) for more information..
+### Penalty 2: Linear penalty
+
+Another type of penalty is the **linear penalty** . The linear penalty assumes a linear trade-off between the penalty values and the primary objective of the conservation planning problem (e.g., solution cost for minimum set problems). In our example, we will now set up a conservation problem that uses an area-based primary cost and we will use the fishing information as a penalty, so that selecting values with a high cost are penalized.
+
+```{r}
+# Add another cost for area
+out_sf <- out_sf %>%
+  mutate(cost_area = rep(1, nrow(.)))
+```
+
+Set up conservation problem.
+
+```{r}
+datEx_problem_linP <- problem(out_sf,
+                           features = col_name,
+                           cost_column = "cost_area") %>%
+  add_linear_penalties(10, data = "cost") %>%
+  add_min_set_objective() %>%
+  add_relative_targets(targets$target) %>%
+  add_binary_decisions() %>%
+  add_default_solver(gap = 0.2, verbose = FALSE) # we're adjusting the optimality gap here to speed up the process
+```
+
+Solve conservation problem.
+
+```{r}
+datEx_soln_linP <- datEx_problem_linP %>%
+  solve.ConservationProblem()
+```
+
+```{r}
+(gg_solnlinP <- splnr_plot_Solution(datEx_soln_linP) +
+    geom_sf(data = landmass, colour = "black", fill = "black", show.legend = FALSE) +
+    coord_sf(xlim = st_bbox(PUs)$xlim, ylim = st_bbox(PUs)$ylim))
+```
+
+There are several types of penalties, so it is worthwhile browsing through the `prioritizr` [Reference tab](https://prioritizr.net/reference/index.html#penalties) for more information.
 
 ## Adding Constraints
 
@@ -446,10 +491,6 @@ datEx_soln_LIC <- datEx_problem_LIC %>%
 Linear constraints can be used to ensure that solutions meet certain criteria. For example, linear constraints can be used to add multiple budgets or to ensure that the total number of planning units allocated to a certain administrative area (e.g., a bioregion) does not exceed a certain threshold (e.g., 30% of its total area).
 
 ```{r}
-# Add another cost for area
-out_sf <- out_sf %>%
-  mutate(cost_area = rep(1, nrow(.)))
-
 # Set up conservation problem
 datEx_problem_LC <- problem(out_sf,
                             features = col_name,
