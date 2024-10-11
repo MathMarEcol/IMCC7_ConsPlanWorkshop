@@ -1,6 +1,8 @@
 ---
 title: "Conservation Planning for the Marine Environment"
 subtitle: "An introduction to tools and techniques"
+execute: 
+  cache: true
 ---
 
 # Workshop Data
@@ -211,11 +213,15 @@ Then, we solve the prioritization using `solve.ConservationProblem()`.
 ```{r}
 dat_soln <- dat_problem %>%
   solve.ConservationProblem()
-
-# saveRDS(dat_soln, file.path("Output", "Solution1.rds"))
 ```
 
 And there you have it, you have generated a spatial prioritization! "Solving" the conservation "problem" is a bit anticlimactic, but this shows that most of the work to generate a spatial prioritization is to preprocess and wrangle the spatial data.
+
+If you want to save the output for later use, you can do this in the normal way for R.
+
+```{r eval=FALSE}
+saveRDS(dat_soln, file.path("Output", "Solution1.rds"))
+```
 
 Let us plot the solution and see what it looks like.
 
@@ -247,18 +253,21 @@ ferrier <- eval_ferrier_importance(dat_problem, soln[, "solution_1"]) %>%
   mutate(geometry = dat_soln$geometry) %>%
   rename(score = "total") %>%
   st_as_sf()
+```
 
+We won't run these today, but the other two irreplaceability scores are shown here.
+```{r eval=FALSE}
 # Rarity weighted richness
-# rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
-#   mutate(geometry = soln$geometry) %>%
-#   rename(score = "rwr") %>%
-#   st_as_sf()
+rwr <- eval_rare_richness_importance(dat_problem, soln[, "solution_1"]) %>%
+  mutate(geometry = soln$geometry) %>%
+  rename(score = "rwr") %>%
+  st_as_sf()
 
 # Replacement cost
-# replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
-#   mutate(geometry = soln$geometry) %>%
-#   drename(score = "rc") %>%
-#   st_as_sf()
+replacement <- eval_replacement_importance(dat_problem, soln[, "solution_1"]) %>%
+  mutate(geometry = soln$geometry) %>%
+  drename(score = "rc") %>%
+  st_as_sf()
 ```
 
 We can visualise the Ferrier score across the planning domain:
@@ -307,7 +316,7 @@ We can see that the majority of PUs have never been selected, some have been sel
 
 # Advanced Spatial prioritization
 
-Preliminaries
+## Preliminaries
 
 ```{r}
 # Extract feature names
@@ -424,7 +433,7 @@ datEx_problem_linP <- problem(out_sf,
 
 Solve conservation problem.
 
-```{r solve_bp}
+```{r}
 datEx_soln_linP <- datEx_problem_linP %>%
   solve.ConservationProblem()
 ```
