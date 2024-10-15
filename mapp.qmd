@@ -3,7 +3,7 @@ title: "The Marxan Planning Platform"
 subtitle: "Galapagos Tutorial"
 ---
 
-There is a copy of the Galapogas Tutorial in your workshop notes .zip file. Alternatively you can download it from [here]("resources/Marxan_newMaPP_Tutorial_Galapagos_Oct2024.pdf").
+There is a copy of the Galapogas Tutorial in your workshop notes .zip file. Alternatively you can download it from [here](resources/Marxan_newMaPP_Tutorial_Galapagos_Oct2024.pdf).
 
 ```{=html}
 <iframe width="100%", height = "800px", src="resources/Marxan_newMaPP_Tutorial_Galapagos_Oct2024.pdf", title="The Marxan Planning Platform: Galapagos Tutorial"></iframe>
