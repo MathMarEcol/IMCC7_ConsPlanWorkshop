@@ -16,5 +16,4 @@ utils::zip(zipfile = "docs/resources/IMCC7_ConsPlanWorkshop.zip",
                      "docs/notes.html",
                      "docs/data.html",
                      "IMCC7_ConsPlanWorkshop.Rproj",
-                     "Marxan_newMaPP_Tutorial_Galapagos_Oct2024.pdf"
-                     ))
+                     "resources/Marxan_newMaPP_Tutorial_Galapagos_Oct2024.pdf"))
